@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.guness.toptal.client"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
+    implementation 'com.google.android.material:material:' + versions.material
+    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:' + versions.constraint_layout
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'androidx.exifinterface:exifinterface:1.1.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //Arch components
+    implementation 'androidx.lifecycle:lifecycle-extensions:' + versions.room_version
+    implementation 'androidx.room:room-runtime:' + versions.room_version
+    kapt 'androidx.room:room-compiler:' + versions.room_version
+    implementation 'androidx.room:room-rxjava2:' + versions.room_version
+    testImplementation 'androidx.room:room-testing:' + versions.room_version
+    androidTestImplementation 'androidx.room:room-testing:' + versions.room_version
+    implementation 'androidx.paging:paging-runtime-ktx:' + versions.paging_version
+    implementation 'androidx.paging:paging-rxjava2-ktx:' + versions.paging_version
+
+    //di
+    implementation 'com.google.dagger:dagger:' + versions.dagger
+    kapt 'com.google.dagger:dagger-compiler:' + versions.dagger
+    kaptTest 'com.google.dagger:dagger-compiler:' + versions.dagger
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:' + versions.dagger
+
+    //async processing
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0'
+
+    //json parser
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //remote api handling
+    implementation 'com.squareup.retrofit2:retrofit:' + versions.retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:' + versions.retrofit
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:' + versions.retrofit
+    implementation 'com.squareup.okhttp3:logging-interceptor:' + versions.okhttp
+    implementation 'com.squareup.okhttp3:okhttp:' + versions.okhttp
+    implementation 'com.squareup.okio:okio:2.4.1'
+
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+    implementation 'joda-time:joda-time:2.10.5'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    implementation project(":protocol")
+}
