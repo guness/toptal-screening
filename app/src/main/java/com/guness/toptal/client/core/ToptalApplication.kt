@@ -7,7 +7,7 @@ import com.guness.toptal.client.di.AppInjector
 import com.guness.toptal.client.di.AppModule
 import com.guness.toptal.client.di.DaggerToptalComponent
 import com.guness.toptal.client.di.ToptalComponent
-import com.guness.toptal.client.utils.RxJava.setupErrorHooks
+import com.guness.toptal.client.utils.rx.RxJava.setupErrorHooks
 import timber.log.Timber
 
 class ToptalApplication : Application() {

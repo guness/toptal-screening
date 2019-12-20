@@ -1,3 +1,12 @@
 package com.guness.toptal.protocol.dto
 
-data class User(val uid: String, val type: UserType)
+import javax.persistence.Entity
+import javax.persistence.Id
+
+@Entity
+data class User(
+    @Id
+    val uid: String,
+    val name: String,
+    val type: UserType
+)

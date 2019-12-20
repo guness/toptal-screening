@@ -1,4 +1,4 @@
-package com.guness.toptal.client.utils
+package com.guness.toptal.client.utils.rx
 
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.exceptions.UndeliverableException
