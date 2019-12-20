@@ -3,6 +3,8 @@ apply plugin: 'kotlin'
 
 buildscript {
     repositories {
+        google()
+        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -14,6 +16,8 @@ sourceCompatibility = "8"
 targetCompatibility = "8"
 
 repositories {
+    google()
+    jcenter()
     mavenCentral()
 }
 
@@ -21,7 +25,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'joda-time:joda-time:2.10.5'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
+    // Spring Annotations
     implementation 'jakarta.persistence:jakarta.persistence-api:2.2.3'
+    // Room Annotations
+    implementation 'androidx.room:room-common:' + versions.room_version
 }
 
 compileKotlin {

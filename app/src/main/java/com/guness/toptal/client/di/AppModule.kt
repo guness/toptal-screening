@@ -6,12 +6,11 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class AppModule(val app: ToptalApplication) {
+class AppModule(private val app: ToptalApplication) {
 
     @Provides
     fun provideApp(): ToptalApplication = app
 
     @Provides
     fun provideContext(): AppContext = app
-
 }

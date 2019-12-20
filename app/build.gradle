@@ -45,7 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     //Arch components
-    implementation 'androidx.lifecycle:lifecycle-extensions:' + versions.room_version
+    implementation 'androidx.lifecycle:lifecycle-extensions:' + versions.lifecycle_version
     implementation 'androidx.room:room-runtime:' + versions.room_version
     kapt 'androidx.room:room-compiler:' + versions.room_version
     implementation 'androidx.room:room-rxjava2:' + versions.room_version
@@ -83,6 +83,6 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation(project(":protocol")) {
-        exclude group: 'jakarta.persistence', module: 'jakarta.persistence-api'
+        exclude group: 'jakarta.persistence'
     }
 }
