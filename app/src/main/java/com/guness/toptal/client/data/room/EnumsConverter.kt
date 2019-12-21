@@ -2,19 +2,19 @@ package com.guness.toptal.client.data.room
 
 import androidx.room.TypeConverter
 import com.guness.toptal.client.utils.extensions.serializedName
-import com.guness.toptal.protocol.dto.UserType
+import com.guness.toptal.protocol.dto.UserRole
 
 object EnumsConverter {
 
     @TypeConverter
     @JvmStatic
-    fun toUserType(value: String?): UserType? {
-        return stringToEnum(UserType.values(), value)
+    fun toUserType(value: String?): UserRole? {
+        return stringToEnum(UserRole.values(), value)
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromUserType(value: UserType?): String? {
+    fun fromUserType(value: UserRole?): String? {
         return enumToString(value)
     }
 

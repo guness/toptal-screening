@@ -2,29 +2,43 @@ package com.guness.toptal.server.controllers
 
 import com.guness.toptal.protocol.request.LoginRequest
 import com.guness.toptal.protocol.response.LoginResponse
-import com.guness.toptal.server.model.Auth
-import com.guness.toptal.server.repositories.AuthRepository
-import org.springframework.web.bind.annotation.GetMapping
+import com.guness.toptal.server.model.DetailedUser
+import com.guness.toptal.server.model.toDto
+import com.guness.toptal.server.security.TokenHelper
+import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 @RestController("/auth")
-class AuthController(val repository: AuthRepository) {
-
-    @GetMapping("/test")
-    fun list() = repository.findAll()
-
-    @PostMapping("/test")
-    fun testCreate() {
-        repository.save(Auth(userId = UUID.randomUUID().toString(), token = "random token"))
-    }
-
-    @PostMapping("/login")
-    fun login(@RequestBody request: LoginRequest): LoginResponse = TODO()
+class AuthController(
+    val tokenHelper: TokenHelper,
+    val authenticationManager: AuthenticationManager
+) {
 
     @PostMapping("/logout")
     fun logout() = Unit
+
+
+    @PostMapping("/auth/login")
+    fun login(@RequestBody request: LoginRequest): ResponseEntity<*>? {
+        val authentication: Authentication = authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken(
+                request.username,
+                request.password
+            )
+        )
+        // Inject into security context
+        SecurityContextHolder.getContext().authentication = authentication
+        // token creation
+        val user = authentication.getPrincipal() as DetailedUser
+        val jws = tokenHelper.generateToken(user.getUsername())
+        // Return the token
+        return ResponseEntity.ok(LoginResponse(user.toDto(), jws))
+    }
 
 }
