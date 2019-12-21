@@ -6,7 +6,7 @@ import com.guness.toptal.protocol.request.CreateEntryRequest
 import com.guness.toptal.protocol.request.CreateUserRequest
 import com.guness.toptal.protocol.request.LoginRequest
 import com.guness.toptal.protocol.response.CreateUserResponse
-import com.guness.toptal.protocol.response.GetEnriesResponse
+import com.guness.toptal.protocol.response.GetEntriesResponse
 import com.guness.toptal.protocol.response.GetUsersResponse
 import com.guness.toptal.protocol.response.LoginResponse
 import io.reactivex.Completable
@@ -46,5 +46,5 @@ interface WebService {
     fun updateEntry(@Body request: TimeEntry): Single<TimeEntry>
 
     @GET("entries")
-    fun getEntries(): Single<GetEnriesResponse>
+    fun getEntries(): Single<GetEntriesResponse>
 }

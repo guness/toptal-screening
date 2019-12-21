@@ -8,5 +8,5 @@ data class User(
     @PrimaryKey
     val id: Long? = null,
     val username: String,
-    val type: UserRole
+    val role: UserRole
 )

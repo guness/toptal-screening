@@ -13,13 +13,16 @@ data class StoredUser(
     val username: String,
     val password: String,
     val enabled: Boolean = true,
-    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "User_Authority",
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "authority_id", referencedColumnName = "id")]
     )
-    val authorities: List<Authority> = listOf(Authority.user)
+    val authorities: List<Authority> = emptyList(),
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
+    val timeEntries: List<StoredTimeEntry> = emptyList()
 )
 
 class DetailedUser(val storedUser: StoredUser) : UserDetails {

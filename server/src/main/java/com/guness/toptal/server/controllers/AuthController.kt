@@ -10,10 +10,11 @@ import com.guness.toptal.server.repositories.RoleRepository
 import com.guness.toptal.server.repositories.UserRepository
 import com.guness.toptal.server.security.TokenHelper
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
@@ -30,20 +31,25 @@ class AuthController(
 ) {
 
     @PostMapping("/auth/login")
-    fun login(@RequestBody request: LoginRequest): LoginResponse {
-        val authentication: Authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(
-                request.username,
-                request.password
+    fun login(@RequestBody request: LoginRequest): ResponseEntity<LoginResponse> {
+        val authentication = try {
+            authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(
+                    request.username,
+                    request.password
+                )
             )
-        )
+        } catch (e: BadCredentialsException) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+        }
+
         // Inject into security context
         SecurityContextHolder.getContext().authentication = authentication
         // token creation
         val user = authentication.principal as DetailedUser
         val jws = tokenHelper.generateToken(user.username)
         // Return the token
-        return LoginResponse(user.toDto(), jws)
+        return ResponseEntity.ok(LoginResponse(user.toDto(), jws))
     }
 
     @PostMapping("/auth/logout")
