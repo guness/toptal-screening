@@ -18,17 +18,4 @@ class ApplicationConfiguration {
         val builder = EmbeddedDatabaseBuilder()
         return builder.setType(EmbeddedDatabaseType.HSQL).build()
     }
-/*
-    @Bean
-    fun entityManagerFactory(): LocalContainerEntityManagerFactoryBean? {
-        val em = LocalContainerEntityManagerFactoryBean()
-        em.dataSource = dataSource()
-        em.setPackagesToScan("com.guness.toptal.protocol.dto")
-        val vendorAdapter: JpaVendorAdapter = HibernateJpaVendorAdapter()
-        em.jpaVendorAdapter = vendorAdapter
-        //em.setJpaProperties(additionalProperties())
-
-        return em
-    }
-    */
 }

@@ -2,10 +2,11 @@ package com.guness.toptal.server.model
 
 import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
+import com.guness.toptal.protocol.dto.User as DtoUser
 
 @Entity
 @Table(name = "User")
-data class User(
+data class StoredUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
@@ -21,21 +22,22 @@ data class User(
     val authorities: List<Authority>
 )
 
-class DetailedUser(val user: User) : UserDetails {
+class DetailedUser(val storedUser: StoredUser) : UserDetails {
 
-    override fun getAuthorities() = user.authorities
+    override fun getAuthorities() = storedUser.authorities
 
-    override fun isEnabled() = user.enabled
+    override fun isEnabled() = storedUser.enabled
 
-    override fun getUsername() = user.username
+    override fun getUsername() = storedUser.username
 
     override fun isCredentialsNonExpired() = true
 
-    override fun getPassword() = user.password
+    override fun getPassword() = storedUser.password
 
     override fun isAccountNonExpired() = true
 
     override fun isAccountNonLocked() = true
 }
 
-fun DetailedUser.toDto() = com.guness.toptal.protocol.dto.User(user.id, username, authorities.first().role)
+fun StoredUser.toDto() = DtoUser(id, username, authorities.first().role)
+fun DetailedUser.toDto() = DtoUser(storedUser.id, username, authorities.first().role)

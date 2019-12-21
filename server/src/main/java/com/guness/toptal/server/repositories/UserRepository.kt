@@ -1,11 +1,8 @@
 package com.guness.toptal.server.repositories
 
-import com.guness.toptal.server.model.User
+import com.guness.toptal.server.model.StoredUser
 import org.springframework.data.repository.CrudRepository
-import java.util.*
 
-interface UserRepository : CrudRepository<User, Long> {
-    fun findByUsername(username: String): User?
-    override fun findById(id: Long?): Optional<User>
-    override fun findAll(): List<User>
+interface UserRepository : CrudRepository<StoredUser, Long> {
+    fun findByUsername(username: String): StoredUser?
 }

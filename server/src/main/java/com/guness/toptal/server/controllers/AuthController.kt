@@ -20,7 +20,7 @@ class AuthController(
     val authenticationManager: AuthenticationManager
 ) {
 
-    @PostMapping("/logout")
+    @PostMapping("/auth/logout")
     fun logout() = Unit
 
 
@@ -35,8 +35,8 @@ class AuthController(
         // Inject into security context
         SecurityContextHolder.getContext().authentication = authentication
         // token creation
-        val user = authentication.getPrincipal() as DetailedUser
-        val jws = tokenHelper.generateToken(user.getUsername())
+        val user = authentication.principal as DetailedUser
+        val jws = tokenHelper.generateToken(user.username)
         // Return the token
         return ResponseEntity.ok(LoginResponse(user.toDto(), jws))
     }
