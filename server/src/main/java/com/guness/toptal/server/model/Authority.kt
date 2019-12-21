@@ -19,4 +19,10 @@ data class Authority(
     override fun getAuthority(): String {
         return role.name
     }
+
+    companion object {
+        val user = Authority(1, UserRole.ROLE_USER)
+        val manager = Authority(2, UserRole.ROLE_MANAGER)
+        val admin = Authority(3, UserRole.ROLE_ADMIN)
+    }
 }

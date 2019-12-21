@@ -55,12 +55,12 @@ class WebSecurityConfig(
             .authorizeRequests()
             .antMatchers("/auth/**", "/error").permitAll()
             .anyRequest().authenticated().and()
-            .addFilterBefore(TokenAuthenticationFilter(tokenHelper!!, detailsService), BasicAuthenticationFilter::class.java)
+            .addFilterBefore(TokenAuthenticationFilter(tokenHelper, detailsService), BasicAuthenticationFilter::class.java)
         http.csrf().disable()
     }
 
     override fun configure(web: WebSecurity) { // TokenAuthenticationFilter will ignore the below paths
-        web.ignoring().antMatchers(HttpMethod.POST, "/auth/login", "/error").and()
+        web.ignoring().antMatchers(HttpMethod.POST, "/auth/**", "/error").and()
             .ignoring().antMatchers(HttpMethod.GET, "/", "/error")
     }
 }

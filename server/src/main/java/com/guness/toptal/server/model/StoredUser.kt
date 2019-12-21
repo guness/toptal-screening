@@ -5,21 +5,21 @@ import javax.persistence.*
 import com.guness.toptal.protocol.dto.User as DtoUser
 
 @Entity
-@Table(name = "User")
+@Table(name = "User", uniqueConstraints = [UniqueConstraint(columnNames = ["username"])])
 data class StoredUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long = 0,
     val username: String,
     val password: String,
-    val enabled: Boolean,
+    val enabled: Boolean = true,
     @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinTable(
         name = "User_Authority",
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "authority_id", referencedColumnName = "id")]
     )
-    val authorities: List<Authority>
+    val authorities: List<Authority> = listOf(Authority.user)
 )
 
 class DetailedUser(val storedUser: StoredUser) : UserDetails {

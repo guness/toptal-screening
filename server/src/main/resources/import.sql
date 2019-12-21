@@ -3,10 +3,10 @@ INSERT INTO User (id, username, password, enabled) VALUES (1, 'admin', '$2y$12$m
 INSERT INTO User (id, username, password, enabled) VALUES (2, 'manager', '$2y$12$B.NWiFyzSIVzrCCJIv95puZTQ9Dtwq/ojHMP7IpMnWT8ZZ0vp8Xge', true);
 INSERT INTO User (id, username, password, enabled) VALUES (3, 'user', '$2y$12$qiyupi6BOkZ8/gbhUuaWR.hYl1fMcvfX8Uhv17tjemAi4AzVGb0T2', true);
 
-INSERT INTO Authority (id, role) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO Authority (id, role) VALUES (1, 'ROLE_USER');
 INSERT INTO Authority (id, role) VALUES (2, 'ROLE_MANAGER');
-INSERT INTO Authority (id, role) VALUES (3, 'ROLE_USER');
+INSERT INTO Authority (id, role) VALUES (3, 'ROLE_ADMIN');
 
-INSERT INTO User_Authority (user_id, authority_id) VALUES (1, 1);
+INSERT INTO User_Authority (user_id, authority_id) VALUES (1, 3);
 INSERT INTO User_Authority (user_id, authority_id) VALUES (2, 2);
-INSERT INTO User_Authority (user_id, authority_id) VALUES (3, 3);
+INSERT INTO User_Authority (user_id, authority_id) VALUES (3, 1);

@@ -10,25 +10,24 @@ import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class TokenAuthenticationFilter(private val tokenHelper: TokenHelper, private val userDetailsService: UserDetailsService) : OncePerRequestFilter() {
+class TokenAuthenticationFilter(
+    private val tokenHelper: TokenHelper,
+    private val userDetailsService: UserDetailsService
+) : OncePerRequestFilter() {
+
     @Throws(IOException::class, ServletException::class)
-    public override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        chain: FilterChain
-    ) {
-        val username: String?
-        val authToken = tokenHelper.getToken(request)
-        if (authToken != null) { // get username from token
-            username = tokenHelper.getUsernameFromToken(authToken)
-            if (username != null) { // get user
-                val userDetails = userDetailsService.loadUserByUsername(username)
-                if (tokenHelper.validateToken(authToken, userDetails)) { // create authentication
-                    val authentication = TokenBasedAuthentication(userDetails)
-                    authentication.token = authToken
-                    SecurityContextHolder.getContext().authentication = authentication
+    public override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
+
+        tokenHelper.getToken(request)?.let { authToken ->
+            tokenHelper.getUsernameFromToken(authToken)
+                ?.let(userDetailsService::loadUserByUsername)
+                ?.let { userDetails ->
+                    if (tokenHelper.validateToken(authToken, userDetails)) {
+                        val authentication = TokenBasedAuthentication(userDetails)
+                        authentication.token = authToken
+                        SecurityContextHolder.getContext().authentication = authentication
+                    }
                 }
-            }
         }
         chain.doFilter(request, response)
     }
