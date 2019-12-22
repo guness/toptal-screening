@@ -25,7 +25,7 @@ abstract class BaseActivity<VM : ViewModel>(private val classType: Class<VM>, @L
 
         setContentView(layoutInflater.inflate(layoutRes, null, false))
 
-        findViewById<Toolbar>(R.id.toolbar)?.let(::setSupportActionBar)
+        findViewById<Toolbar>(R.id.bar)?.let(::setSupportActionBar)
         initView()
     }
 
