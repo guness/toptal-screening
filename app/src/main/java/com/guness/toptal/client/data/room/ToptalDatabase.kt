@@ -20,7 +20,7 @@ abstract class ToptalDatabase : RoomDatabase() {
 
     companion object {
         const val TABLE_USER = "User"
-        const val TABLE_ENTRY = "Entry"
+        const val TABLE_ENTRY = "TimeEntry"
 
     }
 }

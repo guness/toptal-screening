@@ -4,6 +4,8 @@ import com.guness.toptal.protocol.dto.TimeEntry
 import com.guness.toptal.protocol.dto.User
 import com.guness.toptal.protocol.request.CreateUserRequest
 import com.guness.toptal.protocol.request.LoginRequest
+import com.guness.toptal.protocol.request.UpdateEntryRequest
+import com.guness.toptal.protocol.request.UpdateUserRequest
 import com.guness.toptal.protocol.response.CreateUserResponse
 import com.guness.toptal.protocol.response.GetEntriesResponse
 import com.guness.toptal.protocol.response.GetUsersResponse
@@ -29,10 +31,10 @@ interface WebService {
     fun createUser(@Body request: CreateUserRequest): Single<User>
 
     @DELETE("user/{id}")
-    fun deleteUser(@Path("id") uid: String): Completable
+    fun deleteUser(@Path("id") id: Long): Completable
 
-    @PUT("users")
-    fun updateUser(@Body request: User): Single<User>
+    @PUT("user/{id}")
+    fun updateUser(@Path("id") id: Long, @Body request: UpdateUserRequest): Single<User>
 
     @GET("users")
     fun getUsers(): Single<GetUsersResponse>
@@ -42,13 +44,13 @@ interface WebService {
 
     // -- Time Entry --
     @POST("zone")
-    fun createEntry(@Body request: TimeEntry, @Query("userId") userId: String? = null): Single<TimeEntry>
+    fun createEntry(@Body request: TimeEntry, @Query("userId") userId: Long? = null): Single<TimeEntry>
 
     @DELETE("zone/{id}")
-    fun deleteEntry(@Path("id") uid: String): Completable
+    fun deleteEntry(@Path("id") id: Long): Completable
 
-    @PUT("zone")
-    fun updateEntry(@Body request: TimeEntry): Single<TimeEntry>
+    @PUT("zone/{id}")
+    fun updateEntry(@Path("id") id: Long, @Body request: UpdateEntryRequest): Single<TimeEntry>
 
     @GET("zone")
     fun getEntries(): Single<GetEntriesResponse>

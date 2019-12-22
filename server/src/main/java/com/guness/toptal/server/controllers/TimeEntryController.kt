@@ -53,8 +53,8 @@ class TimeEntryController(
         return saveTimeEntry(storedUser, request.name, request.timeZone)
     }
 
-    @PutMapping("/zone", params = ["id"])
-    fun updateEntry(@RequestParam id: Long, @RequestBody request: UpdateEntryRequest, principal: Principal): ResponseEntity<TimeEntry> {
+    @PutMapping("/zone/{id}", params = ["id"])
+    fun updateEntry(@PathVariable id: Long, @RequestBody request: UpdateEntryRequest, principal: Principal): ResponseEntity<TimeEntry> {
         var entry = timeEntryRepository.findById(id).get()
         if (!arrayOf(UserRole.ROLE_ADMIN, UserRole.ROLE_MANAGER).hasAny()) {
             if (principal.name != entry.user.username) {
