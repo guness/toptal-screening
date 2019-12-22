@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository
 
 interface TimeEntryRepository : CrudRepository<StoredTimeEntry, Long> {
     fun findByUser(user: StoredUser): List<StoredTimeEntry>
+    fun deleteByIdAndUserId(id: Long, userId: Long)
 }
