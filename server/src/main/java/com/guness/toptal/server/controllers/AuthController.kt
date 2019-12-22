@@ -67,6 +67,6 @@ class AuthController(
         } catch (e: DataIntegrityViolationException) {
             return ResponseEntity.unprocessableEntity().build<Any>()
         }
-        return ResponseEntity.ok(login(LoginRequest(request.username, request.password)))
+        return login(LoginRequest(request.username, request.password))
     }
 }

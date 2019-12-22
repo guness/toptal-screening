@@ -2,7 +2,6 @@ package com.guness.toptal.client.data
 
 import com.guness.toptal.protocol.dto.TimeEntry
 import com.guness.toptal.protocol.dto.User
-import com.guness.toptal.protocol.request.CreateEntryRequest
 import com.guness.toptal.protocol.request.CreateUserRequest
 import com.guness.toptal.protocol.request.LoginRequest
 import com.guness.toptal.protocol.response.CreateUserResponse
@@ -15,16 +14,21 @@ import retrofit2.http.*
 
 interface WebService {
 
+    // -- Auth --
     @POST("auth/login")
     fun login(@Body request: LoginRequest): Single<LoginResponse>
 
     @POST("auth/logout")
     fun logout(): Completable
 
-    @POST("users/create")
-    fun createUser(@Body request: CreateUserRequest): Single<CreateUserResponse>
+    @POST("auth/register")
+    fun register(@Body request: CreateUserRequest): Single<CreateUserResponse>
 
-    @DELETE("users/{uid}")
+    // -- User --
+    @POST("user/create")
+    fun createUser(@Body request: CreateUserRequest): Single<User>
+
+    @DELETE("user/{id}")
     fun deleteUser(@Path("id") uid: String): Completable
 
     @PUT("users")
@@ -33,18 +37,19 @@ interface WebService {
     @GET("users")
     fun getUsers(): Single<GetUsersResponse>
 
-    @GET("users/current")
+    @GET("user")
     fun getUser(): Single<User>
 
-    @POST("entries/create")
-    fun createEntry(@Body request: CreateEntryRequest): Single<TimeEntry>
+    // -- Time Entry --
+    @POST("zone")
+    fun createEntry(@Body request: TimeEntry, @Query("userId") userId: String? = null): Single<TimeEntry>
 
-    @DELETE("entries/{uid}")
+    @DELETE("zone/{id}")
     fun deleteEntry(@Path("id") uid: String): Completable
 
-    @PUT("entries")
+    @PUT("zone")
     fun updateEntry(@Body request: TimeEntry): Single<TimeEntry>
 
-    @GET("entries")
+    @GET("zone")
     fun getEntries(): Single<GetEntriesResponse>
 }

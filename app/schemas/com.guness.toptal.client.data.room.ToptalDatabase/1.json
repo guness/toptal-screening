@@ -2,34 +2,34 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "93ab3d6f144c2ad83aaaad43835dc618",
+    "identityHash": "7a4b3ac98b6f411432f9dc509e01406c",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `username` TEXT NOT NULL, `role` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "uid",
-            "columnName": "uid",
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "username",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "type",
-            "columnName": "type",
+            "fieldPath": "role",
+            "columnName": "role",
             "affinity": "TEXT",
             "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "uid"
+            "id"
           ],
           "autoGenerate": false
         },
@@ -38,18 +38,18 @@
       },
       {
         "tableName": "TimeEntry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `userUid` TEXT NOT NULL, `name` TEXT NOT NULL, `timeZone` TEXT NOT NULL, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `userId` INTEGER NOT NULL, `name` TEXT NOT NULL, `timeZone` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "uid",
-            "columnName": "uid",
-            "affinity": "TEXT",
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "userUid",
-            "columnName": "userUid",
-            "affinity": "TEXT",
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -67,7 +67,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "uid"
+            "id"
           ],
           "autoGenerate": false
         },
@@ -78,7 +78,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93ab3d6f144c2ad83aaaad43835dc618')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7a4b3ac98b6f411432f9dc509e01406c')"
     ]
   }
 }
