@@ -22,6 +22,7 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>
 
     lateinit var viewModel: VM
     protected val disposables = CompositeDisposable()
+    protected val foregroundDisposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,7 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>
 
         setContentView(layoutInflater.inflate(layoutRes, null, false))
 
-        findViewById<Toolbar>(R.id.bar)?.let(::setSupportActionBar)
+        findViewById<Toolbar>(R.id.toolbar)?.let(::setSupportActionBar)
         initView()
     }
 
@@ -41,7 +42,7 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>
 
     override fun onResume() {
         super.onResume()
-        disposables += viewModel.errors
+        foregroundDisposables += viewModel.errors
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 //todo: display error here
@@ -52,7 +53,13 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>
 
     override fun onPause() {
         super.onPause()
-        disposables.clear()
+        foregroundDisposables.clear()
+    }
+
+    override fun onDestroy() {
+        disposables.dispose()
+        foregroundDisposables.dispose()
+        super.onDestroy()
     }
 
     abstract fun initView()

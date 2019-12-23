@@ -6,10 +6,12 @@ import com.guness.toptal.protocol.request.UpdateEntryRequest
 import com.guness.toptal.protocol.response.GetEntriesResponse
 import com.guness.toptal.server.model.StoredTimeEntry
 import com.guness.toptal.server.model.StoredUser
+import com.guness.toptal.server.model.isValid
 import com.guness.toptal.server.model.toDto
 import com.guness.toptal.server.repositories.TimeEntryRepository
 import com.guness.toptal.server.repositories.UserRepository
 import com.guness.toptal.server.utils.hasAny
+import org.joda.time.DateTimeZone
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -42,15 +44,15 @@ class TimeEntryController(
 
     @PostMapping("/zone", params = ["userId"])
     @PreAuthorize("hasRole('ADMIN') || hasRole('MANAGER')")
-    fun createEntry(@RequestParam userId: Long, @RequestBody request: TimeEntry): TimeEntry {
+    fun createEntry(@RequestParam userId: Long, @RequestBody request: TimeEntry): ResponseEntity<TimeEntry> {
         val storedUser = userRepository.findById(userId).get()
-        return saveTimeEntry(storedUser, request.name, request.timeZone)
+        return saveTimeEntry(storedUser, request.timeZone)
     }
 
     @PostMapping("/zone")
-    fun createEntry(@RequestBody request: TimeEntry, principal: Principal): TimeEntry {
+    fun createEntry(@RequestBody request: TimeEntry, principal: Principal): ResponseEntity<TimeEntry> {
         val storedUser = userRepository.findByUsername(principal.name) ?: throw NoSuchElementException("No value present")
-        return saveTimeEntry(storedUser, request.name, request.timeZone)
+        return saveTimeEntry(storedUser, request.timeZone)
     }
 
     @PutMapping("/zone/{id}", params = ["id"])
@@ -62,13 +64,10 @@ class TimeEntryController(
             }
         }
 
-        request.name?.let {
-            entry = entry.copy(name = it)
-        }
         request.timeZone?.let {
             entry = entry.copy(timeZone = it)
         }
-        return ResponseEntity.ok(saveTimeEntry(entry))
+        return saveTimeEntry(entry)
     }
 
     @Transactional
@@ -87,8 +86,14 @@ class TimeEntryController(
         }
     }
 
-    private fun saveTimeEntry(user: StoredUser, name: String, timeZone: String) =
-        saveTimeEntry(StoredTimeEntry(user = user, name = name, timeZone = timeZone))
+    private fun saveTimeEntry(user: StoredUser, timeZone: DateTimeZone) =
+        saveTimeEntry(StoredTimeEntry(user = user, timeZone = timeZone))
 
-    private fun saveTimeEntry(entry: StoredTimeEntry) = timeEntryRepository.save(entry).toDto()
+    private fun saveTimeEntry(entry: StoredTimeEntry): ResponseEntity<TimeEntry> {
+        return if (entry.timeZone.isValid) {
+            ResponseEntity.ok(timeEntryRepository.save(entry).toDto())
+        } else {
+            ResponseEntity.badRequest().build()
+        }
+    }
 }

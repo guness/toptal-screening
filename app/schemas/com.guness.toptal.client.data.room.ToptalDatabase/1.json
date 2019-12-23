@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "861ef0f1ba4228fa309d159f8f49047c",
+    "identityHash": "058c0c4bbbf27d1b9d35b81f8ef34f91",
     "entities": [
       {
         "tableName": "User",
@@ -38,7 +38,7 @@
       },
       {
         "tableName": "TimeEntry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `userId` INTEGER NOT NULL, `name` TEXT NOT NULL, `timeZone` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`userId`) REFERENCES `User`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `userId` INTEGER NOT NULL, `timeZone` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`userId`) REFERENCES `User`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -50,12 +50,6 @@
             "fieldPath": "userId",
             "columnName": "userId",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -90,7 +84,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '861ef0f1ba4228fa309d159f8f49047c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '058c0c4bbbf27d1b9d35b81f8ef34f91')"
     ]
   }
 }

@@ -4,6 +4,7 @@ import com.guness.toptal.client.data.WebService
 import com.guness.toptal.client.data.room.EntryDao
 import com.guness.toptal.protocol.dto.TimeEntry
 import com.guness.toptal.protocol.request.UpdateEntryRequest
+import org.joda.time.DateTimeZone
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,9 +24,6 @@ class EntryRepository @Inject constructor(
     fun fetchEntries() = webService.getEntries().map { it.entries }
         .doOnSuccess(entryDao::addEntries)
 
-    fun renameEntry(id: Long, name: String) = webService.updateEntry(id, UpdateEntryRequest(name = name))
-        .doOnSuccess(entryDao::addEntry)
-
-    fun updateTime(id: Long, timeZone: String) = webService.updateEntry(id, UpdateEntryRequest(timeZone = timeZone))
+    fun updateTime(id: Long, timeZone: DateTimeZone) = webService.updateEntry(id, UpdateEntryRequest(timeZone = timeZone))
         .doOnSuccess(entryDao::addEntry)
 }

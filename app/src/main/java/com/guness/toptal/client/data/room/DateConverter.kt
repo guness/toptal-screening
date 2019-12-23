@@ -2,6 +2,7 @@ package com.guness.toptal.client.data.room
 
 import androidx.room.TypeConverter
 import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import java.util.*
 
 object DateConverter {
@@ -28,5 +29,17 @@ object DateConverter {
     @JvmStatic
     fun fromDate(value: Date?): Long? {
         return value?.time
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun toDateTimeZone(value: String?): DateTimeZone? {
+        return value?.let { DateTimeZone.forID(it) }
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun fromDateTimeZone(value: DateTimeZone?): String? {
+        return value?.id
     }
 }

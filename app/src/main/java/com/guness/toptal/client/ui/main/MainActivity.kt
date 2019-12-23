@@ -2,11 +2,13 @@ package com.guness.toptal.client.ui.main
 
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
 import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
+import com.guness.toptal.client.ui.entry.NewEntryActivity
+import com.guness.toptal.client.utils.extensions.startActivity
 import com.guness.toptal.client.utils.listView.ListAdapter
 import com.guness.toptal.client.utils.listView.SingleTypeItemLayout
+import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,24 +19,16 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class.java, R.la
     private val adapter = ListAdapter<SingleTypeItemLayout>()
 
     override fun initView() {
-
         listView.adapter = adapter
 
-        fab.setOnClickListener { view ->
+        disposables += fab.clicks().subscribe { startActivity(NewEntryActivity::class) }
 
-            Snackbar.make(rootView, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(fab)
-                .setAction("Action") {
-                    viewModel.login()
-                }
-                .show()
-
-        }
-
-        bar.setNavigationOnClickListener {
+        toolbar.setNavigationOnClickListener {
             // Handle the navigation click by showing a BottomDrawer etc.
             val bottomNavDrawerFragment = BottomSheetFragment()
             bottomNavDrawerFragment.show(supportFragmentManager, bottomNavDrawerFragment.tag)
+
+            viewModel.login()
         }
 
         disposables += viewModel.entries

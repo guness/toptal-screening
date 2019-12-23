@@ -24,15 +24,16 @@ class GsonModule {
 
         val gson by lazy {
             GsonBuilder()
-                .registerTypeAdapter(
-                    DateTime::class.java,
-                    JsonDeserializer<DateTime> { json, _, _ ->
-                        val dateTime = DateTime(json.asString, DateTimeZone.UTC)
-                        dateTime.withZone(DateTimeZone.getDefault())
-                    })
+                .registerTypeAdapter(DateTime::class.java, JsonDeserializer<DateTime> { json, _, _ ->
+                    val dateTime = DateTime(json.asString, DateTimeZone.UTC)
+                    dateTime.withZone(DateTimeZone.getDefault())
+                })
                 .registerTypeAdapter(Date::class.java, JsonDeserializer<Date> { json, _, _ ->
                     val dateTime = DateTime(json.asString, DateTimeZone.UTC)
                     dateTime.withZone(DateTimeZone.getDefault()).toDate()
+                })
+                .registerTypeAdapter(DateTimeZone::class.java, JsonDeserializer<DateTimeZone> { json, _, _ ->
+                    DateTimeZone.forID(json.asString)
                 })
 /*                .registerTypeAdapter(
                     PushNotificationData::class.java,
