@@ -6,6 +6,7 @@ import io.reactivex.Flowable
 
 @Dao
 interface UserDao {
+
     @Query("SELECT * FROM ${ToptalDatabase.TABLE_USER}")
     fun users(): Flowable<List<User>>
 

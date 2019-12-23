@@ -13,7 +13,7 @@ class RoomModule {
 
     @Provides
     @Singleton
-    fun providesMediciDatabase(context: AppContext): ToptalDatabase = Room.databaseBuilder(context, ToptalDatabase::class.java, dbName)
+    fun providesToptalDatabase(context: AppContext): ToptalDatabase = Room.databaseBuilder(context, ToptalDatabase::class.java, dbName)
         .addMigrations(*migrations)
         .build()
 
@@ -22,7 +22,6 @@ class RoomModule {
 
     @Provides
     fun providesEntryDao(database: ToptalDatabase) = database.entryDao()
-
 
     companion object {
 

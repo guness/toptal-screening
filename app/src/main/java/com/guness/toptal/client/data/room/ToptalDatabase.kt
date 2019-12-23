@@ -15,6 +15,7 @@ import com.guness.toptal.protocol.dto.User
 )
 @TypeConverters(DateConverter::class, EnumsConverter::class)
 abstract class ToptalDatabase : RoomDatabase() {
+
     abstract fun userDao(): UserDao
     abstract fun entryDao(): EntryDao
 

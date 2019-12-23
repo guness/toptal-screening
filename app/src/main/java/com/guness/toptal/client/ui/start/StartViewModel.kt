@@ -1,7 +1,7 @@
 package com.guness.toptal.client.ui.start
 
-import androidx.lifecycle.ViewModel
+import com.guness.toptal.client.core.BaseViewModel
 import javax.inject.Inject
 
-class StartViewModel @Inject constructor() : ViewModel() {
+class StartViewModel @Inject constructor() : BaseViewModel() {
 }

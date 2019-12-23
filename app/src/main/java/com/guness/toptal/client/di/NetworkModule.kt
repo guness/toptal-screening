@@ -4,17 +4,19 @@ import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.guness.toptal.client.BuildConfig
-import com.guness.toptal.client.data.storage.AuthStore
 import com.guness.toptal.client.data.WebService
 import com.guness.toptal.client.data.interceptors.AccessTokenInterceptor
 import com.guness.toptal.client.data.interceptors.UnauthorizedHandler
 import com.guness.toptal.client.data.interceptors.loggingInterceptor
+import com.guness.toptal.client.data.storage.AuthStore
 import com.guness.toptal.client.di.scopes.ApiCall
 import com.guness.toptal.client.utils.retrofit.EmptyBodyConverterFactory
 import com.guness.toptal.client.utils.retrofit.EnumRetrofitConverterFactory
 import com.guness.toptal.client.utils.rx.RxErrorHandlingCallAdapterFactory
 import dagger.Module
 import dagger.Provides
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -27,12 +29,17 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides
+    fun providesErrorHandlerCallAdapter(): RxErrorHandlingCallAdapterFactory {
+        return RxErrorHandlingCallAdapterFactory(Schedulers.io(), AndroidSchedulers.mainThread())
+    }
+
+    @Provides
     @Singleton
     fun provideWebservice(@ApiCall retrofit: Retrofit): WebService = retrofit.create(WebService::class.java)
 
     @Provides
     @ApiCall
-    fun providesApiInterceptors(authStore: AuthStore, @ApiCall unauthorizedHandler: UnauthorizedHandler): Array<Interceptor> {
+    fun providesApiInterceptors(authStore: AuthStore, unauthorizedHandler: UnauthorizedHandler): Array<Interceptor> {
         return arrayOf(
             unauthorizedHandler,
             AccessTokenInterceptor(authStore),

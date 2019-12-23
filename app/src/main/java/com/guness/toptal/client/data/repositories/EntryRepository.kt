@@ -20,6 +20,9 @@ class EntryRepository @Inject constructor(
     fun createEntry(entry: TimeEntry, userId: Long? = null) = webService.createEntry(entry, userId)
         .doOnSuccess(entryDao::addEntry)
 
+    fun fetchEntries() = webService.getEntries().map { it.entries }
+        .doOnSuccess(entryDao::addEntries)
+
     fun renameEntry(id: Long, name: String) = webService.updateEntry(id, UpdateEntryRequest(name = name))
         .doOnSuccess(entryDao::addEntry)
 

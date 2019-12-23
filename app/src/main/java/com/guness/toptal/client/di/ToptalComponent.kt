@@ -9,6 +9,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
+        RoomModule::class,
         GsonModule::class,
         NetworkModule::class,
         ViewModelModule::class

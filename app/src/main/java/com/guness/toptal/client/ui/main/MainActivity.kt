@@ -15,8 +15,11 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class.java, R.la
 
             Snackbar.make(rootView, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAnchorView(fab)
-                .setAction("Action", null)
+                .setAction("Action", {
+                    viewModel.login()
+                })
                 .show()
+
         }
 
         bar.setNavigationOnClickListener {
