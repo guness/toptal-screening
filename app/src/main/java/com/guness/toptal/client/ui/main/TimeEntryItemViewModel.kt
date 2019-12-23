@@ -12,8 +12,10 @@ class TimeEntryItemViewModel(private val timeEntry: TimeEntry) : IdentifableView
     override val hashCode = timeEntry.hashCode()
 
     override fun bind(view: View) {
-        view.name.text = timeEntry.timeZone.getName(0)
-        view.city.text = timeEntry.timeZone.id.split("/")[1]
-        view.offset.text = timeEntry.timeZone.getOffsetFromLocal(0).toString()
+
+        view.clock.timeZone = timeEntry.timeZone.id
+        view.name.text = timeEntry.name
+        view.city.text = timeEntry.city
+        view.offset.text = timeEntry.diff.toString()
     }
 }

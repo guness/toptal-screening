@@ -24,4 +24,10 @@ interface EntryDao {
 
     @Query("DELETE FROM ${ToptalDatabase.TABLE_ENTRY}")
     fun clear()
+
+    @Transaction
+    fun setEntries(list: List<TimeEntry>) {
+        clear()
+        addEntries(list)
+    }
 }

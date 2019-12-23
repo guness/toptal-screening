@@ -22,7 +22,7 @@ class EntryRepository @Inject constructor(
         .doOnSuccess(entryDao::addEntry)
 
     fun fetchEntries() = webService.getEntries().map { it.entries }
-        .doOnSuccess(entryDao::addEntries)
+        .doOnSuccess(entryDao::setEntries)
 
     fun updateTime(id: Long, timeZone: DateTimeZone) = webService.updateEntry(id, UpdateEntryRequest(timeZone = timeZone))
         .doOnSuccess(entryDao::addEntry)
