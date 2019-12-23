@@ -1,5 +1,7 @@
 package com.guness.toptal.client.data.repositories
 
+import androidx.annotation.AnyThread
+import androidx.annotation.WorkerThread
 import com.guness.toptal.client.data.WebService
 import com.guness.toptal.client.data.room.EntryDao
 import com.guness.toptal.client.data.room.UserDao
@@ -19,15 +21,25 @@ class UsersRepository @Inject constructor(
 
     fun users() = userDao.users()
 
-    fun deleteUser(user: User) = webService.deleteUser(user.id)
-        .doOnComplete { userDao.deleteUser(user) }
+    @WorkerThread
+    fun postUser(user: User) = userDao.addUser(user)
 
+    @WorkerThread
+    fun removeUser(user: User) = userDao.deleteUser(user)
+
+    @AnyThread
+    fun deleteUser(user: User) = webService.deleteUser(user.id)
+        .doOnComplete { removeUser(user) }
+
+    @AnyThread
     fun createUser(username: String, password: String) = webService.createUser(CreateUserRequest(username, password))
         .doOnSuccess(userDao::addUser)
 
-    fun roleUser(id: Long, role: UserRole) = webService.updateUser(id, UpdateUserRequest(role = role))
+    @AnyThread
+    fun promoteUser(id: Long, role: UserRole) = webService.updateUser(id, UpdateUserRequest(role = role))
         .doOnSuccess(userDao::addUser)
 
+    @AnyThread
     fun changePassword(id: Long, password: String) = webService.updateUser(id, UpdateUserRequest(password = password))
         .doOnSuccess(userDao::addUser)
 }

@@ -1,14 +1,17 @@
 package com.guness.toptal.client.core
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.guness.toptal.client.R
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+import timber.log.Timber
 import javax.inject.Inject
 
 abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>, @LayoutRes private val layoutRes: Int) : AppCompatActivity() {
@@ -18,7 +21,7 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>
     val viewModelFactory get() = injectTarget.viewModelFactory
 
     lateinit var viewModel: VM
-    private val disposables = CompositeDisposable()
+    protected val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +41,13 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>
 
     override fun onResume() {
         super.onResume()
-        disposables += viewModel.errors.subscribe {
-            //todo: display error here
-        }
+        disposables += viewModel.errors
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                //todo: display error here
+                Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+                Timber.e(it)
+            }
     }
 
     override fun onPause() {

@@ -8,13 +8,13 @@ object EnumsConverter {
 
     @TypeConverter
     @JvmStatic
-    fun toUserType(value: String?): UserRole? {
+    fun toUserRole(value: String?): UserRole? {
         return stringToEnum(UserRole.values(), value)
     }
 
     @TypeConverter
     @JvmStatic
-    fun fromUserType(value: UserRole?): String? {
+    fun fromUserRole(value: UserRole?): String? {
         return enumToString(value)
     }
 

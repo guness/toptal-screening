@@ -15,7 +15,6 @@ import com.guness.toptal.client.utils.retrofit.EnumRetrofitConverterFactory
 import com.guness.toptal.client.utils.rx.RxErrorHandlingCallAdapterFactory
 import dagger.Module
 import dagger.Provides
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -30,7 +29,7 @@ class NetworkModule {
 
     @Provides
     fun providesErrorHandlerCallAdapter(): RxErrorHandlingCallAdapterFactory {
-        return RxErrorHandlingCallAdapterFactory(Schedulers.io(), AndroidSchedulers.mainThread())
+        return RxErrorHandlingCallAdapterFactory(Schedulers.io())
     }
 
     @Provides

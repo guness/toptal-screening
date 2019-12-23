@@ -11,7 +11,7 @@ import java.lang.reflect.Type
 //CHECK HERE:  https://stackoverflow.com/a/56541415/1281930
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class RxErrorHandlingCallAdapterFactory(private val subscribeScheduler: Scheduler, private val observerScheduler: Scheduler) : CallAdapter.Factory() {
+class RxErrorHandlingCallAdapterFactory(private val scheduler: Scheduler) : CallAdapter.Factory() {
 
     private var mOriginalCallAdapterFactory: RxJava2CallAdapterFactory = RxJava2CallAdapterFactory.create()
 
@@ -22,26 +22,22 @@ class RxErrorHandlingCallAdapterFactory(private val subscribeScheduler: Schedule
             rawType.isAssignableFrom(Maybe::class.java) -> RxCallAdapterWrapper.MaybeCallAdapter(
                 retrofit,
                 wrapped as CallAdapter<Any, Maybe<Any>>,
-                subscribeScheduler,
-                observerScheduler
+                scheduler
             )
             rawType.isAssignableFrom(Single::class.java) -> RxCallAdapterWrapper.SingleCallAdapter(
                 retrofit,
                 wrapped as CallAdapter<Any, Single<Any>>,
-                subscribeScheduler,
-                observerScheduler
+                scheduler
             )
             rawType.isAssignableFrom(Observable::class.java) -> RxCallAdapterWrapper.ObservableCallAdapter(
                 retrofit,
                 wrapped as CallAdapter<Any, Observable<Any>>,
-                subscribeScheduler,
-                observerScheduler
+                scheduler
             )
             rawType.isAssignableFrom(Completable::class.java) -> RxCallAdapterWrapper.CompletableCallAdapter(
                 retrofit,
                 wrapped as CallAdapter<Any, Completable>,
-                subscribeScheduler,
-                observerScheduler
+                scheduler
             )
             else -> null
         }
@@ -51,8 +47,7 @@ class RxErrorHandlingCallAdapterFactory(private val subscribeScheduler: Schedule
 sealed class RxCallAdapterWrapper<R, T>(
     val retrofit: Retrofit,
     val wrappedAdapter: CallAdapter<R, T>,
-    val subscribeScheduler: Scheduler,
-    val observerScheduler: Scheduler
+    val scheduler: Scheduler
 ) : CallAdapter<R, T> {
     override fun responseType(): Type {
         return wrappedAdapter.responseType()
@@ -61,13 +56,11 @@ sealed class RxCallAdapterWrapper<R, T>(
     class ObservableCallAdapter<R>(
         retrofit: Retrofit,
         wrappedAdapter: CallAdapter<R, Observable<R>>,
-        subscribeScheduler: Scheduler,
-        observerScheduler: Scheduler
-    ) : RxCallAdapterWrapper<R, Observable<R>>(retrofit, wrappedAdapter, subscribeScheduler, observerScheduler) {
+        scheduler: Scheduler
+    ) : RxCallAdapterWrapper<R, Observable<R>>(retrofit, wrappedAdapter, scheduler) {
         override fun adapt(call: Call<R>): Observable<R> {
             return wrappedAdapter.adapt(call)
-                .subscribeOn(subscribeScheduler)
-                .observeOn(observerScheduler)
+                .subscribeOn(scheduler)
                 .flatMap {
                     if (it is Response<*>) {
                         if (it.isSuccessful) {
@@ -86,13 +79,11 @@ sealed class RxCallAdapterWrapper<R, T>(
     class SingleCallAdapter<R>(
         retrofit: Retrofit,
         wrappedAdapter: CallAdapter<R, Single<R>>,
-        subscribeScheduler: Scheduler,
-        observerScheduler: Scheduler
-    ) : RxCallAdapterWrapper<R, Single<R>>(retrofit, wrappedAdapter, subscribeScheduler, observerScheduler) {
+        scheduler: Scheduler
+    ) : RxCallAdapterWrapper<R, Single<R>>(retrofit, wrappedAdapter, scheduler) {
         override fun adapt(call: Call<R>): Single<R> {
             return wrappedAdapter.adapt(call)
-                .subscribeOn(subscribeScheduler)
-                .observeOn(observerScheduler)
+                .subscribeOn(scheduler)
                 .flatMap {
                     if (it is Response<*>) {
                         if (it.isSuccessful) {
@@ -111,13 +102,11 @@ sealed class RxCallAdapterWrapper<R, T>(
     class MaybeCallAdapter<R>(
         retrofit: Retrofit,
         wrappedAdapter: CallAdapter<R, Maybe<R>>,
-        subscribeScheduler: Scheduler,
-        observerScheduler: Scheduler
-    ) : RxCallAdapterWrapper<R, Maybe<R>>(retrofit, wrappedAdapter, subscribeScheduler, observerScheduler) {
+        scheduler: Scheduler
+    ) : RxCallAdapterWrapper<R, Maybe<R>>(retrofit, wrappedAdapter, scheduler) {
         override fun adapt(call: Call<R>): Maybe<R> {
             return wrappedAdapter.adapt(call)
-                .subscribeOn(subscribeScheduler)
-                .observeOn(observerScheduler)
+                .subscribeOn(scheduler)
                 .flatMap {
                     if (it is Response<*>) {
                         if (it.isSuccessful) {
@@ -136,13 +125,11 @@ sealed class RxCallAdapterWrapper<R, T>(
     class CompletableCallAdapter<R>(
         retrofit: Retrofit,
         wrappedAdapter: CallAdapter<R, Completable>,
-        subscribeScheduler: Scheduler,
-        observerScheduler: Scheduler
-    ) : RxCallAdapterWrapper<R, Completable>(retrofit, wrappedAdapter, subscribeScheduler, observerScheduler) {
+        scheduler: Scheduler
+    ) : RxCallAdapterWrapper<R, Completable>(retrofit, wrappedAdapter, scheduler) {
         override fun adapt(call: Call<R>): Completable {
             return wrappedAdapter.adapt(call)
-                .subscribeOn(subscribeScheduler)
-                .observeOn(observerScheduler)
+                .subscribeOn(scheduler)
                 .onErrorResumeNext { err: Throwable -> Completable.error(asRetrofitException(retrofit, call.request().url.toString(), err)) }
         }
     }
