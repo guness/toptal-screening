@@ -16,6 +16,6 @@ class TimeEntryItemViewModel(private val timeEntry: TimeEntry) : IdentifableView
         view.clock.timeZone = timeEntry.timeZone.id
         view.name.text = timeEntry.name
         view.city.text = timeEntry.city
-        view.offset.text = timeEntry.diff.toString()
+        view.offset.text = timeEntry.diff
     }
 }

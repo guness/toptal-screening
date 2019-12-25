@@ -39,7 +39,9 @@
         android:layout_below="@+id/city"
         android:layout_toStartOf="@+id/offset"
         android:layout_toEndOf="@+id/clock"
+        android:ellipsize="end"
         android:gravity="bottom"
+        android:maxLines="1"
         tools:text="GMT+03:00" />
 
     <TextView
@@ -51,5 +53,6 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
+        android:textSize="18sp"
         tools:text="+03" />
 </RelativeLayout>
