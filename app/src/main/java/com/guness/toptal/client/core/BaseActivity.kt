@@ -13,8 +13,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.reflect.KClass
 
-abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>, @LayoutRes private val layoutRes: Int) : AppCompatActivity() {
+abstract class BaseActivity<VM : BaseViewModel>(private val classType: KClass<VM>, @LayoutRes private val layoutRes: Int) : AppCompatActivity() {
 
     private val injectTarget = ActivityInjectTarget()
 
@@ -27,7 +28,7 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: Class<VM>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         application.injector.inject(injectTarget)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(classType)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(classType.java)
 
         setContentView(layoutInflater.inflate(layoutRes, null, false))
 

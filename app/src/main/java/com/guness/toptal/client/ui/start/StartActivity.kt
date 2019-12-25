@@ -7,7 +7,7 @@ import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class StartActivity : BaseActivity<StartViewModel>(StartViewModel::class.java, R.layout.activity_main) {
+class StartActivity : BaseActivity<StartViewModel>(StartViewModel::class, R.layout.activity_main) {
 
     override fun initView() {
         fab.setOnClickListener { view ->

@@ -62,11 +62,11 @@
     <string name="text_field_label_title" description="Label text for a text field [CHAR LIMIT=50]">Text field</string>
     <string name="text_field_hint_text">Label</string>
 
-    <string name="bottom_nav_label_title">Bottom navigation</string>
-    <string name="bottom_nav_favorites_title">Favorites</string>
-    <string name="bottom_nav_music_title">Music</string>
-    <string name="bottom_nav_places_title">Places</string>
-    <string name="bottom_nav_news_title">News</string>
+    <string name="bottom_nav_account_title">Account</string>
+    <string name="bottom_nav_register_title">Create Account</string>
+    <string name="bottom_nav_users_title">Manage Users</string>
+    <string name="bottom_nav_login_title">Log in</string>
+    <string name="bottom_nav_logout_title">Log out</string>
 
     <string name="switch_label_title">Switch</string>
 

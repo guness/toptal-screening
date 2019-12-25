@@ -6,7 +6,7 @@ import com.guness.toptal.protocol.dto.validTimeZoneIDs
 import org.joda.time.DateTimeZone
 import timber.log.Timber
 
-class NewEntryActivity : BaseActivity<NewEntryViewModel>(NewEntryViewModel::class.java, R.layout.activity_new_entry) {
+class NewEntryActivity : BaseActivity<NewEntryViewModel>(NewEntryViewModel::class, R.layout.activity_new_entry) {
 
     override fun initView() {
         validTimeZoneIDs.forEach {

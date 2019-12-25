@@ -1,6 +1,7 @@
 package com.guness.toptal.client.ui.main
 
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.SearchView
 import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
@@ -15,7 +16,7 @@ import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class.java, R.layout.activity_main) {
+class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.activity_main) {
 
     private val adapter = ListAdapter<SingleTypeItemLayout>()
 
@@ -55,5 +56,37 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class.java, R.la
         }
         searchView.queryTextChanges().subscribe(viewModel.filter)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.bottom_nav_logout -> handleLogoutMenu()
+            R.id.bottom_nav_users -> handleUsersMenu()
+            R.id.bottom_nav_register -> handleRegisterMenu()
+            R.id.bottom_nav_login -> handleLoginMenu()
+            R.id.bottom_nav_account -> handleAccountMenu()
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return false
+    }
+
+    private fun handleAccountMenu() {
+
+    }
+
+    private fun handleLoginMenu() {
+
+    }
+
+    private fun handleRegisterMenu() {
+
+    }
+
+    private fun handleUsersMenu() {
+
+    }
+
+    private fun handleLogoutMenu() {
+
     }
 }

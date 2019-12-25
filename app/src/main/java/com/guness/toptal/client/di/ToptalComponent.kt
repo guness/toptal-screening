@@ -1,6 +1,7 @@
 package com.guness.toptal.client.di
 
 import com.guness.toptal.client.core.ActivityInjectTarget
+import com.guness.toptal.client.core.FragmentInjectTarget
 import dagger.Component
 import javax.inject.Singleton
 
@@ -19,4 +20,5 @@ interface ToptalComponent : AppInjector
 
 interface AppInjector {
     fun inject(target: ActivityInjectTarget)
+    fun inject(target: FragmentInjectTarget)
 }
