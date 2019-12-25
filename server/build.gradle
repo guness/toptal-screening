@@ -42,7 +42,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'io.jsonwebtoken:jjwt:0.6.0'
     implementation 'org.hsqldb:hsqldb:2.5.0'
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.10.1'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:' + versions.jackson
     implementation 'joda-time:joda-time:' + versions.joda_time
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

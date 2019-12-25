@@ -1,8 +1,6 @@
 package com.guness.toptal.client.di
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializer
+import com.google.gson.*
 import com.guness.toptal.client.utils.gson.AnnotationExclusionStrategy
 import dagger.Module
 import dagger.Provides
@@ -34,6 +32,9 @@ class GsonModule {
                 })
                 .registerTypeAdapter(DateTimeZone::class.java, JsonDeserializer<DateTimeZone> { json, _, _ ->
                     DateTimeZone.forID(json.asString)
+                })
+                .registerTypeAdapter(DateTimeZone::class.java, JsonSerializer<DateTimeZone> { obj, _, _ ->
+                    JsonPrimitive(obj.id)
                 })
 /*                .registerTypeAdapter(
                     PushNotificationData::class.java,

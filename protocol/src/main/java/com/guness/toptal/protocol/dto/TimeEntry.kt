@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.guness.toptal.protocol.util.Exclude
 import org.joda.time.DateTimeUtils
 import org.joda.time.DateTimeZone
 import kotlin.math.absoluteValue
@@ -13,27 +15,38 @@ import kotlin.math.absoluteValue
         entity = User::class,
         parentColumns = ["id"],
         childColumns = ["userId"],
-        onUpdate = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.SET_NULL,
         onDelete = ForeignKey.CASCADE
     )]
 )
 data class TimeEntry(
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val userId: Long = 0,
+    val userId: Long? = null,
     val timeZone: DateTimeZone
 ) {
 
     @Ignore
+    @Exclude
+    @JsonIgnore
     val diff = timeZone.diff.run { "${sign(this)}${formatTime(absoluteValue)}" }
 
     @Ignore
-    val name: String = timeZone.getName(DateTimeUtils.currentTimeMillis())
+    @Exclude
+    @JsonIgnore
+    val name: String = timeZone.name
 
     @Ignore
-    val city: String = timeZone.id.split("/").last().replace("_", " ")
+    @Exclude
+    @JsonIgnore
+    val city: String = timeZone.id.timeZoneCity()
 }
+
+fun String.timeZoneCity() = split("/").last().replace("_", " ")
+
+val DateTimeZone.name: String
+    get() = getName(DateTimeUtils.currentTimeMillis())
 
 private val DateTimeZone.diff
     get() = DateTimeUtils.currentTimeMillis().let { getOffset(it) - (DateTimeZone.getDefault().getOffset(it)) }
@@ -62,4 +75,5 @@ private fun formatTime(time: Int): String {
 val validTimeZoneIDs by lazy {
     DateTimeZone.getAvailableIDs()
         .filter { it.contains("/") && !it.startsWith("Etc/") }
+        .sortedBy { it.timeZoneCity() }
 }

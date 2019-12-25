@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "058c0c4bbbf27d1b9d35b81f8ef34f91",
+    "identityHash": "fc9de97255a4044c7a79fcf151d0254b",
     "entities": [
       {
         "tableName": "User",
@@ -38,7 +38,7 @@
       },
       {
         "tableName": "TimeEntry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `userId` INTEGER NOT NULL, `timeZone` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`userId`) REFERENCES `User`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` INTEGER, `timeZone` TEXT NOT NULL, FOREIGN KEY(`userId`) REFERENCES `User`(`id`) ON UPDATE SET NULL ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -50,7 +50,7 @@
             "fieldPath": "userId",
             "columnName": "userId",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "timeZone",
@@ -63,14 +63,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": [
           {
             "table": "User",
             "onDelete": "CASCADE",
-            "onUpdate": "CASCADE",
+            "onUpdate": "SET NULL",
             "columns": [
               "userId"
             ],
@@ -84,7 +84,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '058c0c4bbbf27d1b9d35b81f8ef34f91')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fc9de97255a4044c7a79fcf151d0254b')"
     ]
   }
 }

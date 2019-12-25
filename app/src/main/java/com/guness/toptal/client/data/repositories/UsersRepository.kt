@@ -3,7 +3,6 @@ package com.guness.toptal.client.data.repositories
 import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
 import com.guness.toptal.client.data.WebService
-import com.guness.toptal.client.data.room.EntryDao
 import com.guness.toptal.client.data.room.UserDao
 import com.guness.toptal.protocol.dto.User
 import com.guness.toptal.protocol.dto.UserRole
@@ -15,8 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class UsersRepository @Inject constructor(
     private val webService: WebService,
-    private val userDao: UserDao,
-    private val entryDao: EntryDao
+    private val userDao: UserDao
 ) {
 
     fun users() = userDao.users()

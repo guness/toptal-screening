@@ -10,6 +10,7 @@ import com.guness.toptal.client.utils.listView.DefaultAdapterModel
 import com.guness.toptal.client.utils.listView.SingleTypeItemLayout
 import io.reactivex.BackpressureStrategy
 import io.reactivex.rxkotlin.Flowables
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
@@ -35,10 +36,12 @@ class MainViewModel @Inject constructor(
         .map { DefaultAdapterModel(it.toTypedArray()) }
 
     override fun onStart() {
-        profileRepository.observeSession()
+        disposables += profileRepository.observeSession()
             .filter { it }
-            .flatMapMaybe { entryRepository.fetchEntries().react() }
-            .subs()
+            .flatMapMaybe {
+                entryRepository.fetchEntries().react()
+            }
+            .subscribe()
     }
 
     fun login() {

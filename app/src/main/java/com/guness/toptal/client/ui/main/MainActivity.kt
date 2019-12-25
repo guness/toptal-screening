@@ -9,8 +9,8 @@ import com.guness.toptal.client.ui.entry.NewEntryActivity
 import com.guness.toptal.client.utils.extensions.startActivity
 import com.guness.toptal.client.utils.listView.ListAdapter
 import com.guness.toptal.client.utils.listView.SingleTypeItemLayout
-import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.widget.queryTextChanges
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.queryTextChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*

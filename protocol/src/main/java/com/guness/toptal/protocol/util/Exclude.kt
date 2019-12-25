@@ -1,4 +1,4 @@
-package com.guness.toptal.client.utils.gson
+package com.guness.toptal.protocol.util
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
