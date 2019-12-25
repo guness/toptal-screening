@@ -8,7 +8,7 @@ import com.guness.toptal.client.data.WebService
 import com.guness.toptal.client.data.interceptors.AccessTokenInterceptor
 import com.guness.toptal.client.data.interceptors.UnauthorizedHandler
 import com.guness.toptal.client.data.interceptors.loggingInterceptor
-import com.guness.toptal.client.data.storage.AuthStore
+import com.guness.toptal.client.data.repositories.ProfileRepository
 import com.guness.toptal.client.di.scopes.ApiCall
 import com.guness.toptal.client.utils.retrofit.EmptyBodyConverterFactory
 import com.guness.toptal.client.utils.retrofit.EnumRetrofitConverterFactory
@@ -38,10 +38,10 @@ class NetworkModule {
 
     @Provides
     @ApiCall
-    fun providesApiInterceptors(authStore: AuthStore, unauthorizedHandler: UnauthorizedHandler): Array<Interceptor> {
+    fun providesApiInterceptors(profileRepository: ProfileRepository, unauthorizedHandler: UnauthorizedHandler): Array<Interceptor> {
         return arrayOf(
             unauthorizedHandler,
-            AccessTokenInterceptor(authStore),
+            AccessTokenInterceptor(profileRepository),
             loggingInterceptor
         )
     }

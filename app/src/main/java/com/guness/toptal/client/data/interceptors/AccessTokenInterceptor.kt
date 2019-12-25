@@ -1,14 +1,14 @@
 package com.guness.toptal.client.data.interceptors
 
-import com.guness.toptal.client.data.storage.AuthStore
+import com.guness.toptal.client.data.repositories.ProfileRepository
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AccessTokenInterceptor(private val authStore: AuthStore) : Interceptor {
+class AccessTokenInterceptor(private val profileRepository: ProfileRepository) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
-        authStore.bearerToken?.let {
+        profileRepository.bearerToken?.let {
             builder.header("Authorization", "Bearer $it")
         }
         return chain.proceed(builder.build())

@@ -22,7 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.entry.NewEntryActivity" />
-        <activity android:name=".ui.start.StartActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
