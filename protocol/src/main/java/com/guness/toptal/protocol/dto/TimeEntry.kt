@@ -23,7 +23,7 @@ data class TimeEntry(
     val userId: Long = 0,
     val timeZone: DateTimeZone
 ) {
-    
+
     @Ignore
     val diff = DateTimeUtils.currentTimeMillis().let { (DateTimeZone.getDefault().getOffset(it) - timeZone.getOffset(it)) / (1000 * 60) }
 

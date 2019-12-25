@@ -10,3 +10,12 @@ INSERT INTO Authority (id, role) VALUES (3, 'ROLE_ADMIN');
 INSERT INTO User_Authority (user_id, authority_id) VALUES (1, 3);
 INSERT INTO User_Authority (user_id, authority_id) VALUES (2, 2);
 INSERT INTO User_Authority (user_id, authority_id) VALUES (3, 1);
+
+INSERT INTO Time_Entry (id, user_id, time_zone) VALUES (1, 3, 'Africa/Dar_es_Salaam');
+INSERT INTO Time_Entry (id, user_id, time_zone) VALUES (2, 3, 'America/Argentina/Buenos_Aires');
+INSERT INTO Time_Entry (id, user_id, time_zone) VALUES (3, 3, 'America/Argentina/La_Rioja');
+INSERT INTO Time_Entry (id, user_id, time_zone) VALUES (4, 3, 'Europe/Tiraspol');
+INSERT INTO Time_Entry (id, user_id, time_zone) VALUES (5, 3, 'Pacific/Port_Moresby');
+INSERT INTO Time_Entry (id, user_id, time_zone) VALUES (6, 3, 'Asia/Hong_Kong');
+INSERT INTO Time_Entry (id, user_id, time_zone) VALUES (7, 3, 'Atlantic/South_Georgia');
+INSERT INTO Time_Entry (id, user_id, time_zone) VALUES (8, 3, 'Australia/Lord_Howe');
