@@ -6,6 +6,7 @@ import com.guness.toptal.client.data.repositories.ProfileRepository
 import com.guness.toptal.client.data.repositories.UsersRepository
 import com.guness.toptal.client.utils.extensions.takeSingle
 import com.guness.toptal.protocol.dto.TimeEntry
+import com.guness.toptal.protocol.dto.validTimeZoneIDs
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Observables
@@ -36,6 +37,10 @@ class EntryViewModel @Inject constructor(
                 pair.second.orElseGet { TimeEntry(timeZone = DateTimeZone.UTC) }.copy(timeZone = it)
             }
         }
+
+    fun timeZoneIDs() = Single.fromCallable {
+        validTimeZoneIDs
+    }.subscribeOn(Schedulers.io())
 
     fun save(create: Boolean) = profileRepository.observeSession()
         .takeSingle()

@@ -80,4 +80,6 @@
     <string name="sure_to_delete">Are you sure to delete this record?</string>
     <string name="yes_delete">Yes, delete</string>
     <string name="cancel">Cancel</string>
+    <string name="empty" />
+    <string name="saved_clocks">Saved Clocks</string>
 </resources>

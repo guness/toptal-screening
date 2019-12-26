@@ -6,21 +6,19 @@ import android.widget.SearchView
 import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
 import com.guness.toptal.client.ui.entry.EntryActivity
-import com.guness.toptal.client.utils.extensions.mapList
 import com.guness.toptal.client.utils.extensions.startActivity
-import com.guness.toptal.client.utils.listView.DefaultAdapterModel
 import com.guness.toptal.client.utils.listView.ListAdapter
-import com.guness.toptal.client.utils.listView.SingleTypeItemLayout
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.queryTextChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Flowables
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.activity_main) {
 
-    private val adapter = ListAdapter<SingleTypeItemLayout>()
+    private val adapter = ListAdapter<EntryItemLayout>()
 
     override fun initView() {
         listView.adapter = adapter
@@ -31,14 +29,12 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
             val bottomNavDrawerFragment = BottomSheetFragment()
             bottomNavDrawerFragment.show(supportFragmentManager, bottomNavDrawerFragment.tag)
         }
-
-        disposables += viewModel.entries
-            .mapList { entry ->
-                SingleTypeItemLayout(R.layout.item_row_time_entry, TimeEntryItemViewModel(entry) {
-                    startActivity(EntryActivity.newIntent(this, entry))
-                })
+        disposables += Flowables.combineLatest(viewModel.entries, viewModel.manager)
+            .map { pair ->
+                TimeEntryAdapterModel(pair.first, pair.second) {
+                    startActivity(EntryActivity.newIntent(this, it))
+                }
             }
-            .map { DefaultAdapterModel(it.toTypedArray()) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(adapter::update)
 

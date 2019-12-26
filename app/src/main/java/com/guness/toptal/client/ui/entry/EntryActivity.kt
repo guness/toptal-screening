@@ -29,7 +29,12 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
 
     override fun initView() {
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        input_edit_text.configureDropDownMenu(validTimeZoneIDs) { it.timeZoneCity() }
+
+        viewModel.timeZoneIDs()
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMapObservable {
+                input_edit_text.configureDropDownMenu(validTimeZoneIDs) { it.timeZoneCity() }
+            }
             .map(DateTimeZone::forID)
             .map { Optional.of(it) }
             .subscribe(viewModel.timeZone)

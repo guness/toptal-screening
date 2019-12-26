@@ -17,6 +17,7 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val filter = BehaviorSubject.createDefault<CharSequence>("")
+    val manager = profileRepository.observeManager().toFlowable(BackpressureStrategy.LATEST)
 
     val entries = Flowables.combineLatest(entryRepository.entries(), filter.toFlowable(BackpressureStrategy.LATEST))
         .map { pair ->
