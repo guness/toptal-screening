@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.guness.toptal.client.utils.viewModel.ViewModelFactory
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
@@ -42,6 +43,13 @@ abstract class BaseFragment<VM : BaseViewModel>(private val classType: KClass<VM
         super.onViewCreated(view, savedInstanceState)
         this.savedInstanceState = savedInstanceState
         initView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        foregroundDisposables += viewModel.errors.doOnNext {
+            (activity as? BaseActivity<*>)?.viewModel?.errors?.onNext(it)
+        }.subscribe()
     }
 
     override fun onPause() {

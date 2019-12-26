@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.entry.EntryActivity" />
+        <activity android:name=".ui.auth.AuthenticationActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

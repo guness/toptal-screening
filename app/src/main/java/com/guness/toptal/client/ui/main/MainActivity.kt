@@ -5,11 +5,14 @@ import android.view.MenuItem
 import android.widget.SearchView
 import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
+import com.guness.toptal.client.ui.auth.AuthMode
+import com.guness.toptal.client.ui.auth.AuthenticationActivity
 import com.guness.toptal.client.ui.entry.EntryActivity
 import com.guness.toptal.client.utils.extensions.startActivity
 import com.guness.toptal.client.utils.listView.ListAdapter
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.queryTextChanges
+import com.petarmarijanovic.rxactivityresult.RxActivityResult
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Flowables
 import io.reactivex.rxkotlin.plusAssign
@@ -19,6 +22,10 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.activity_main) {
 
     private val adapter = ListAdapter<EntryItemLayout>()
+
+    private val activityResult: RxActivityResult by lazy {
+        RxActivityResult(this)
+    }
 
     override fun initView() {
         listView.adapter = adapter
@@ -78,11 +85,20 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
     }
 
     private fun handleLoginMenu() {
-        viewModel.login()
+        handleAuth(AuthMode.LOGIN)
     }
 
     private fun handleRegisterMenu() {
+        handleAuth(AuthMode.REGISTER)
+    }
 
+    private fun handleAuth(authMode: AuthMode) {
+        disposables += activityResult.start(AuthenticationActivity.newIntent(this, authMode))
+            .filter { it.isOk }
+            .doOnSuccess {
+                //TODO: we may ask for merge items
+            }
+            .subscribe()
     }
 
     private fun handleUsersMenu() {

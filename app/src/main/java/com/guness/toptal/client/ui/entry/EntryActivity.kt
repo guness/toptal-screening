@@ -19,7 +19,6 @@ import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.plusAssign
-import kotlinx.android.synthetic.main.activity_entry.*
 import kotlinx.android.synthetic.main.content_entry.*
 import org.joda.time.DateTimeUtils
 import org.joda.time.DateTimeZone
@@ -28,7 +27,6 @@ import java.util.*
 class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layout.activity_entry) {
 
     override fun initView() {
-        toolbar.setNavigationOnClickListener { onBackPressed() }
 
         viewModel.timeZoneIDs()
             .observeOn(AndroidSchedulers.mainThread())
@@ -55,14 +53,14 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
                 id_text.setText(it.get().id)
                 clock.timeZone = it.get().id
                 clock.visibility = View.VISIBLE
-                save.isEnabled = it.get() != initialEntry?.timeZone
+                button.isEnabled = it.get() != initialEntry?.timeZone
                 hideKeyboard()
             } else {
                 name_text.setText("")
                 offset_text.setText("")
                 id_text.setText("")
                 clock.visibility = View.INVISIBLE
-                save.isEnabled = false
+                button.isEnabled = false
             }
         }
 
@@ -77,7 +75,7 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
                 user_layout.visibility = View.VISIBLE
             }
 
-        disposables += save.clicks()
+        disposables += button.clicks()
             .flatMapSingle {
                 viewModel.save(initialEntry == null)
             }

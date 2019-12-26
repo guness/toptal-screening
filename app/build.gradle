@@ -84,6 +84,7 @@ dependencies {
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
     implementation 'joda-time:joda-time:' + versions.joda_time
     implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.github.guness:RxActivityResult:2.2.2'
 
     implementation(project(":protocol")) {
         exclude group: 'jakarta.persistence'

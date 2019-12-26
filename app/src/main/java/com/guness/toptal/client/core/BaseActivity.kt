@@ -34,7 +34,11 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: KClass<VM
 
         setContentView(layoutInflater.inflate(layoutRes, null, false))
 
-        findViewById<Toolbar>(R.id.toolbar)?.let(::setSupportActionBar)
+        findViewById<Toolbar>(R.id.toolbar)?.let {
+            setSupportActionBar(it)
+            it.setNavigationOnClickListener { onBackPressed() }
+        }
+
         initView()
     }
 

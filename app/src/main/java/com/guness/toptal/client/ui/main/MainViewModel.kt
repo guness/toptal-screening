@@ -39,10 +39,6 @@ class MainViewModel @Inject constructor(
             .subscribe()
     }
 
-    fun login() {
-        authRepository.login("user", "password").subs()
-    }
-
     fun logout() {
         authRepository.logout().subs()
     }

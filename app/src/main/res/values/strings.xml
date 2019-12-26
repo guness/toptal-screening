@@ -82,4 +82,11 @@
     <string name="cancel">Cancel</string>
     <string name="empty" />
     <string name="saved_clocks">Saved Clocks</string>
+    <string name="login">Login</string>
+    <string name="create_account">CreateAccount</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="have_account_register">Don\'t you have an account, let\'s have one?</string>
+    <string name="have_account_login">Do you have an account? Just log in then.</string>
 </resources>
