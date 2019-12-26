@@ -21,4 +21,11 @@ class AuthRepository @Inject constructor(
             profileRepository.postProfile(it.user)
         }
         .ignoreElement()
+
+    @AnyThread
+    fun logout() = webService.logout()
+        .doOnComplete {
+            profileRepository.clear()
+            usersRepository.clear()
+        }
 }

@@ -29,7 +29,7 @@ class MainViewModel @Inject constructor(
             }
         }
 
-    override fun onStart() {
+    fun fetchEntries() {
         disposables += profileRepository.observeSession()
             .filter { it }
             .flatMapMaybe {
@@ -39,6 +39,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun login() {
-        authRepository.login("manager", "password").subs()
+        authRepository.login("user", "password").subs()
+    }
+    fun logout() {
+        authRepository.logout().subs()
     }
 }

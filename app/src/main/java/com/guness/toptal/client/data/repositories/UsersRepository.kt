@@ -41,5 +41,8 @@ class UsersRepository @Inject constructor(
     fun changePassword(id: Long, password: String) = webService.updateUser(id, UpdateUserRequest(password = password))
         .doOnSuccess(userDao::addUser)
 
+    @WorkerThread
+    fun clear() = userDao.clear()
+
     fun user(userId: Long) = userDao.user(userId)
 }

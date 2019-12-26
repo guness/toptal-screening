@@ -17,15 +17,19 @@ class EntryRepository @Inject constructor(
 ) {
     fun entries() = entryDao.entries()
 
-    fun deleteEntry(entry: TimeEntry) = webService.deleteEntry(entry.id)
-        .doOnComplete { entryDao.deleteEntry(entry) }
-
     @AnyThread
     fun createEntry(entry: TimeEntry, userId: Long? = null) = webService.createEntry(entry, userId)
         .doOnSuccess(entryDao::addEntry)
 
+    @AnyThread
+    fun deleteEntry(entry: TimeEntry) = webService.deleteEntry(entry.id)
+        .doOnComplete { removeEntry(entry) }
+
     @WorkerThread
     fun addEntry(entry: TimeEntry) = entryDao.addEntry(entry)
+
+    @WorkerThread
+    fun removeEntry(entry: TimeEntry) = entryDao.deleteEntry(entry)
 
     fun fetchEntries() = webService.getEntries().map { it.entries }
         .doOnSuccess(entryDao::setEntries)

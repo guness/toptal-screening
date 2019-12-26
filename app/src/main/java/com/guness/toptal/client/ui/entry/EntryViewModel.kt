@@ -6,6 +6,7 @@ import com.guness.toptal.client.data.repositories.ProfileRepository
 import com.guness.toptal.client.data.repositories.UsersRepository
 import com.guness.toptal.client.utils.extensions.takeSingle
 import com.guness.toptal.protocol.dto.TimeEntry
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
@@ -56,6 +57,13 @@ class EntryViewModel @Inject constructor(
         }
         .subscribeOn(Schedulers.io())
 
+    private fun deleteLocal() = timeEntry.takeSingle()
+        .flatMapCompletable {
+            Completable.fromCallable {
+                entryRepository.removeEntry(it.get())
+            }
+        }
+        .subscribeOn(Schedulers.io())
 
     private fun saveServer(create: Boolean) = timeEntry.takeSingle().flatMap {
         val entry = it.get()
@@ -65,4 +73,19 @@ class EntryViewModel @Inject constructor(
             entryRepository.updateTime(entry.id, entry.timeZone)
         }
     }
+
+    private fun deleteServer() = timeEntry.takeSingle()
+        .flatMapCompletable {
+            entryRepository.deleteEntry(it.get())
+        }
+
+    fun delete() = profileRepository.observeSession()
+        .takeSingle()
+        .flatMapCompletable {
+            if (it) {
+                deleteServer()
+            } else {
+                deleteLocal()
+            }
+        }
 }

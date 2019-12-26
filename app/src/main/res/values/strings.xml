@@ -76,4 +76,8 @@
     <string name="time_zone">Time Zone (GMT)</string>
     <string name="time_zone_id">Time Zone ID</string>
     <string name="save">Save Record</string>
+    <string name="delete">Delete</string>
+    <string name="sure_to_delete">Are you sure to delete this record?</string>
+    <string name="yes_delete">Yes, delete</string>
+    <string name="cancel">Cancel</string>
 </resources>

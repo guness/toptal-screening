@@ -31,7 +31,7 @@ class ProfileRepository @Inject constructor(private val context: Context, privat
     }
 
     @WorkerThread
-    fun clearProfile() {
+    fun clear() {
         profile.onNext(Optional.empty())
         session.onNext(false)
         sharedPreferences.edit().remove(USER_KEY).apply()

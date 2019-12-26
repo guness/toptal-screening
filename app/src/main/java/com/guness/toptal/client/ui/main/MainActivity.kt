@@ -28,11 +28,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
         disposables += fab.clicks().subscribe { startActivity(EntryActivity::class) }
 
         toolbar.setNavigationOnClickListener {
-            // Handle the navigation click by showing a BottomDrawer etc.
             val bottomNavDrawerFragment = BottomSheetFragment()
             bottomNavDrawerFragment.show(supportFragmentManager, bottomNavDrawerFragment.tag)
-
-            viewModel.login()
         }
 
         disposables += viewModel.entries
@@ -46,6 +43,8 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
             .subscribe(adapter::update)
 
         disposables += viewModel.filter.skip(1).subscribe { toolbar.performShow() }
+
+        viewModel.fetchEntries()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,7 +82,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
     }
 
     private fun handleLoginMenu() {
-
+        viewModel.login()
     }
 
     private fun handleRegisterMenu() {
@@ -95,6 +94,6 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
     }
 
     private fun handleLogoutMenu() {
-
+        viewModel.logout()
     }
 }

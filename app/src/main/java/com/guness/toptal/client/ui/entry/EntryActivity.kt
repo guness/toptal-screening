@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
 import com.guness.toptal.client.utils.extensions.configureDropDownMenu
@@ -39,6 +40,7 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
             viewModel.initialEntry.onNext(Optional.of(it))
             viewModel.timeZone.onNext(Optional.of(it.timeZone))
             input_edit_text.setText(it.timeZone.id.timeZoneCity())
+            delete.visibility = View.VISIBLE
         }
 
         disposables += viewModel.timeZone.subscribe {
@@ -78,6 +80,25 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
             .subscribe {
                 finish()
             }
+
+        disposables += delete.clicks()
+            .doOnNext {
+                MaterialAlertDialogBuilder(this)
+                    .setMessage(R.string.sure_to_delete)
+                    .setPositiveButton(R.string.yes_delete) { _, _ ->
+                        deleteRecord()
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
+            }
+            .subscribe()
+    }
+
+    private fun deleteRecord() {
+        disposables += viewModel.delete()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { finish() }
+            .subscribe()
     }
 
     private fun hideKeyboard() {
