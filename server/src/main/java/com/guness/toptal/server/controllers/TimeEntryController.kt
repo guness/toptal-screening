@@ -55,7 +55,7 @@ class TimeEntryController(
         return saveTimeEntry(storedUser, request.timeZone)
     }
 
-    @PutMapping("/zone/{id}", params = ["id"])
+    @PutMapping("/zone/{id}")
     fun updateEntry(@PathVariable id: Long, @RequestBody request: UpdateEntryRequest, principal: Principal): ResponseEntity<TimeEntry> {
         var entry = timeEntryRepository.findById(id).get()
         if (!arrayOf(UserRole.ROLE_ADMIN, UserRole.ROLE_MANAGER).hasAny()) {
@@ -67,7 +67,7 @@ class TimeEntryController(
         request.timeZone?.let {
             entry = entry.copy(timeZone = it)
         }
-        return saveTimeEntry(entry)
+        return saveTimeEntry(entry, update = true)
     }
 
     @Transactional
@@ -86,12 +86,17 @@ class TimeEntryController(
         }
     }
 
-    private fun saveTimeEntry(user: StoredUser, timeZone: DateTimeZone) =
-        saveTimeEntry(StoredTimeEntry(user = user, timeZone = timeZone))
+    private fun saveTimeEntry(user: StoredUser, timeZone: DateTimeZone, update: Boolean = false) =
+        saveTimeEntry(StoredTimeEntry(user = user, timeZone = timeZone), update)
 
-    private fun saveTimeEntry(entry: StoredTimeEntry): ResponseEntity<TimeEntry> {
+    private fun saveTimeEntry(entry: StoredTimeEntry, update: Boolean = false): ResponseEntity<TimeEntry> {
         return if (entry.timeZone.isValid) {
-            ResponseEntity.ok(timeEntryRepository.save(entry).toDto())
+            if (update) {
+                ResponseEntity.ok(timeEntryRepository.save(entry).toDto())
+            } else {
+                ResponseEntity.ok(timeEntryRepository.save(entry).toDto())
+            }
+
         } else {
             ResponseEntity.badRequest().build()
         }

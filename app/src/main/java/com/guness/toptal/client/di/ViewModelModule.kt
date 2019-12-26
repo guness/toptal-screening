@@ -2,7 +2,7 @@ package com.guness.toptal.client.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.guness.toptal.client.ui.entry.NewEntryViewModel
+import com.guness.toptal.client.ui.entry.EntryViewModel
 import com.guness.toptal.client.ui.main.BottomSheetViewModel
 import com.guness.toptal.client.ui.main.MainViewModel
 import com.guness.toptal.client.utils.viewModel.ViewModelFactory
@@ -24,8 +24,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(NewEntryViewModel::class)
-    abstract fun bindNewEntryViewModel(viewModel: NewEntryViewModel): ViewModel
+    @ViewModelKey(EntryViewModel::class)
+    abstract fun bindNewEntryViewModel(viewModel: EntryViewModel): ViewModel
 
     @Binds
     @IntoMap

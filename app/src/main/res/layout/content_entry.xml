@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.entry.NewEntryActivity"
-    tools:showIn="@layout/activity_new_entry">
+    tools:context=".ui.entry.EntryActivity"
+    tools:showIn="@layout/activity_entry">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout"
@@ -16,7 +16,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:hint="@string/pick_city"
+        android:hint="@string/city"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -97,6 +97,31 @@
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/user_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/user"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/offset_layout"
+        tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextClock
         android:id="@+id/clock"
         style="@style/TextAppearance.MyTheme.Headline4"
@@ -112,7 +137,7 @@
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/offset_layout"
+        app:layout_constraintTop_toBottomOf="@+id/user_layout"
         tools:text="16:42" />
 
     <com.google.android.material.button.MaterialButton

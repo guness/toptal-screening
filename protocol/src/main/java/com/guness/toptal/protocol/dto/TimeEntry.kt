@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.guness.toptal.protocol.util.Exclude
 import org.joda.time.DateTimeUtils
 import org.joda.time.DateTimeZone
+import java.io.Serializable
 import kotlin.math.absoluteValue
 
 @Entity(
@@ -25,7 +26,7 @@ data class TimeEntry(
     val id: Long = 0,
     val userId: Long? = null,
     val timeZone: DateTimeZone
-) {
+) : Serializable {
 
     @Ignore
     @Exclude

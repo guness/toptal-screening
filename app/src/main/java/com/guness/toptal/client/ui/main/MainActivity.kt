@@ -5,8 +5,10 @@ import android.view.MenuItem
 import android.widget.SearchView
 import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
-import com.guness.toptal.client.ui.entry.NewEntryActivity
+import com.guness.toptal.client.ui.entry.EntryActivity
+import com.guness.toptal.client.utils.extensions.mapList
 import com.guness.toptal.client.utils.extensions.startActivity
+import com.guness.toptal.client.utils.listView.DefaultAdapterModel
 import com.guness.toptal.client.utils.listView.ListAdapter
 import com.guness.toptal.client.utils.listView.SingleTypeItemLayout
 import com.jakewharton.rxbinding3.view.clicks
@@ -23,7 +25,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
     override fun initView() {
         listView.adapter = adapter
 
-        disposables += fab.clicks().subscribe { startActivity(NewEntryActivity::class) }
+        disposables += fab.clicks().subscribe { startActivity(EntryActivity::class) }
 
         toolbar.setNavigationOnClickListener {
             // Handle the navigation click by showing a BottomDrawer etc.
@@ -34,6 +36,12 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
         }
 
         disposables += viewModel.entries
+            .mapList { entry ->
+                SingleTypeItemLayout(R.layout.item_row_time_entry, TimeEntryItemViewModel(entry) {
+                    startActivity(EntryActivity.newIntent(this, entry))
+                })
+            }
+            .map { DefaultAdapterModel(it.toTypedArray()) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(adapter::update)
 

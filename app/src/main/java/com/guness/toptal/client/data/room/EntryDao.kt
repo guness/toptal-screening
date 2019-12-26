@@ -7,7 +7,7 @@ import io.reactivex.Flowable
 @Dao
 interface EntryDao {
 
-    @Query("SELECT * FROM ${ToptalDatabase.TABLE_ENTRY}")
+    @Query("SELECT * FROM ${ToptalDatabase.TABLE_ENTRY} ORDER BY id DESC")
     fun entries(): Flowable<List<TimeEntry>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

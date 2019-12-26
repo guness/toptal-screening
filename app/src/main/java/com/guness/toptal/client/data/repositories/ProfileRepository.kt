@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.annotation.WorkerThread
 import com.google.gson.Gson
 import com.guness.toptal.protocol.dto.User
+import com.guness.toptal.protocol.dto.UserRole
+import com.guness.toptal.protocol.dto.manager
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 import java.util.*
@@ -37,6 +39,8 @@ class ProfileRepository @Inject constructor(private val context: Context, privat
     }
 
     fun observeProfile() = profile.hide()
+    fun observeManager() = profile.map { it.map { it.role.manager }.orElseGet { false } }
+    fun observeAdmin() = profile.map { it.map { it.role == UserRole.ROLE_ADMIN }.orElseGet { false } }
     fun observeSession() = session.hide().distinctUntilChanged()
 
     var bearerToken: String? = sharedPreferences.getString(BEARER_KEY, null)

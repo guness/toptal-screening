@@ -70,7 +70,8 @@
     <string name="label_typography_scale_title">Typography scale</string>
 
     <string name="create_new_entry">Create New Clock</string>
-    <string name="pick_city">Pick City</string>
+    <string name="city">City</string>
+    <string name="user">User</string>
     <string name="name">Name</string>
     <string name="time_zone">Time Zone (GMT)</string>
     <string name="time_zone_id">Time Zone ID</string>
