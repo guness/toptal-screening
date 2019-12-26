@@ -45,8 +45,7 @@ class EntryViewModel @Inject constructor(
             } else {
                 saveLocal()
             }
-        }
-        .react()
+        }.react()
 
 
     private fun saveLocal() = timeEntry.takeSingle()
@@ -77,7 +76,7 @@ class EntryViewModel @Inject constructor(
     private fun deleteServer() = timeEntry.takeSingle()
         .flatMapCompletable {
             entryRepository.deleteEntry(it.get())
-        }
+        }.react()
 
     fun delete() = profileRepository.observeSession()
         .takeSingle()

@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.guness.toptal.client.R
+import com.guness.toptal.client.utils.errors.fresh
+import com.guness.toptal.client.utils.errors.handle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -44,11 +46,14 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: KClass<VM
     override fun onResume() {
         super.onResume()
         foregroundDisposables += viewModel.errors
+            .filter { it.fresh }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                //todo: display error here
-                Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
-                Timber.e(it)
+                it.handle {
+                    //todo: display error here
+                    Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+                    Timber.e(it)
+                }
             }
     }
 

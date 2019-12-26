@@ -73,7 +73,7 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
             }
 
         disposables += save.clicks()
-            .flatMapMaybe {
+            .flatMapSingle {
                 viewModel.save(initialEntry == null)
             }
             .observeOn(AndroidSchedulers.mainThread())

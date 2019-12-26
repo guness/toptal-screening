@@ -28,10 +28,14 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     // -- RX.react() --
-    protected fun <T> Single<T>.react() = catch().track()
+    protected fun <T> Single<T>.react() = track().catch()
 
-    protected fun <T> Observable<T>.react() = catch().track()
-    protected fun Completable.react() = catch().track()
+    protected fun <T> Observable<T>.react() = track().catch()
+    protected fun Completable.react() = track().catch()
+
+
+    // -- RX.dontCare() --
+    protected fun <T> Single<T>.ignoreResult() = track().onErrorResumeNext { Single.never() }
 
     // -- RX.track() --
     protected fun <T> Maybe<T>.track() = trackActivity(activityIndicator)
@@ -47,16 +51,18 @@ abstract class BaseViewModel : ViewModel() {
     protected fun Completable.subs() = react().subscribe().addTo(disposables)
 
     // -- RX.catch() --
-    protected fun <T> Single<T>.catch() = toMaybe().doOnError {
+    protected fun <T> Single<T>.catch() = onErrorResumeNext {
         errors.onNext(ToptalException.from(it))
-    }.onErrorComplete()
+        Single.never()
+    }
 
     protected fun <T> Observable<T>.catch() = onErrorResumeNext { err: Throwable ->
         errors.onNext(ToptalException.from(err))
         Observable.empty()
     }
 
-    protected fun Completable.catch() = doOnError {
+    protected fun Completable.catch() = onErrorResumeNext {
         errors.onNext(ToptalException.from(it))
-    }.onErrorComplete()
+        Completable.never()
+    }
 }

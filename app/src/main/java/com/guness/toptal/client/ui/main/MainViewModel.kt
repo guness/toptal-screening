@@ -32,8 +32,8 @@ class MainViewModel @Inject constructor(
     fun fetchEntries() {
         disposables += profileRepository.observeSession()
             .filter { it }
-            .flatMapMaybe {
-                entryRepository.fetchEntries().react()
+            .flatMapSingle {
+                entryRepository.fetchEntries().ignoreResult()
             }
             .subscribe()
     }
@@ -41,6 +41,7 @@ class MainViewModel @Inject constructor(
     fun login() {
         authRepository.login("user", "password").subs()
     }
+
     fun logout() {
         authRepository.logout().subs()
     }
