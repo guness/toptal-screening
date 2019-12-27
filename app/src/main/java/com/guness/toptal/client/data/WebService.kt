@@ -27,7 +27,7 @@ interface WebService {
     fun register(@Body request: CreateUserRequest): Single<CreateUserResponse>
 
     // -- User --
-    @POST("user/create")
+    @POST("user")
     fun createUser(@Body request: CreateUserRequest): Single<User>
 
     @DELETE("user/{id}")

@@ -9,6 +9,7 @@ import com.guness.toptal.client.ui.auth.AuthMode
 import com.guness.toptal.client.ui.auth.AuthenticationActivity
 import com.guness.toptal.client.ui.entry.EntryActivity
 import com.guness.toptal.client.ui.profile.ProfileActivity
+import com.guness.toptal.client.ui.users.UsersActivity
 import com.guness.toptal.client.utils.extensions.startActivity
 import com.guness.toptal.client.utils.listView.ListAdapter
 import com.jakewharton.rxbinding3.view.clicks
@@ -55,7 +56,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.bottom_app_bar_menu, menu)
+        menuInflater.inflate(R.menu.search_app_bar_menu, menu)
         val searchView = menu.findItem(R.id.bottom_app_bar_menu_search).actionView as SearchView
         searchView.maxWidth = Integer.MAX_VALUE
         searchView.setOnSearchClickListener {
@@ -105,7 +106,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
     }
 
     private fun handleUsersMenu() {
-
+        startActivity(UsersActivity.newIntent(this))
     }
 
     private fun handleLogoutMenu() {

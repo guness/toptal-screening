@@ -2,11 +2,12 @@ package com.guness.toptal.client.ui.profile
 
 import com.guness.toptal.client.core.BaseViewModel
 import com.guness.toptal.client.data.repositories.EntryRepository
-import com.guness.toptal.client.data.repositories.ProfileRepository
+import com.guness.toptal.client.data.repositories.ProfileModel
 import com.guness.toptal.client.data.repositories.UsersRepository
 import com.guness.toptal.client.utils.extensions.takeSingle
 import com.guness.toptal.protocol.dto.User
 import com.guness.toptal.protocol.dto.UserRole
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Observables
@@ -16,15 +17,15 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val entryRepository: EntryRepository,
     private val usersRepository: UsersRepository,
-    private val profileRepository: ProfileRepository
+    private val profileModel: ProfileModel
 ) : BaseViewModel() {
 
     val user = BehaviorSubject.create<User>()
-    val role = BehaviorSubject.create<UserRole>()
-    val self = profileRepository.observeProfile().map { it.get() }
+    val role = BehaviorSubject.create<UserRole>() //TODO: make optional
+    val self = profileModel.observeProfile().map { it.get() }
     val selfProfile = Observables.combineLatest(user, self).map { it.first.id == it.second.id }
     val entries = user.flatMap { entryRepository.entriesByUser(it.id).toObservable() }
-    val admin = profileRepository.observeAdmin().distinctUntilChanged()
+    val admin = profileModel.observeAdmin().distinctUntilChanged()
 
     fun initSelf(): Observable<Unit> {
         return self
@@ -62,5 +63,9 @@ class ProfileViewModel @Inject constructor(
             }
             .react()
             .map { }
+    }
+
+    fun deleteUser(): Completable {
+        return user.take(1).flatMapCompletable(usersRepository::deleteUser).react()
     }
 }

@@ -28,6 +28,9 @@ interface EntryDao {
     @Query("DELETE FROM ${ToptalDatabase.TABLE_ENTRY}")
     fun clear()
 
+    @Query("DELETE FROM ${ToptalDatabase.TABLE_ENTRY} WHERE userId=:userId")
+    fun clearByUser(userId: Long)
+
     @Transaction
     fun setEntries(list: List<TimeEntry>) {
         clear()

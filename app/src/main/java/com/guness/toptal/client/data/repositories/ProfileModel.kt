@@ -13,7 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ProfileRepository @Inject constructor(private val context: Context, private val gson: Gson) {
+class ProfileModel @Inject constructor(private val context: Context, private val gson: Gson) {
 
     private var profile = BehaviorSubject.createDefault<Optional<User>>(Optional.empty())
     private val session = BehaviorSubject.createDefault(false)

@@ -2,7 +2,7 @@ package com.guness.toptal.client.ui.entry
 
 import com.guness.toptal.client.core.BaseViewModel
 import com.guness.toptal.client.data.repositories.EntryRepository
-import com.guness.toptal.client.data.repositories.ProfileRepository
+import com.guness.toptal.client.data.repositories.ProfileModel
 import com.guness.toptal.client.data.repositories.UsersRepository
 import com.guness.toptal.client.utils.extensions.takeSingle
 import com.guness.toptal.protocol.dto.TimeEntry
@@ -22,14 +22,14 @@ import javax.inject.Inject
 class EntryViewModel @Inject constructor(
     private val entryRepository: EntryRepository,
     private val usersRepository: UsersRepository,
-    private val profileRepository: ProfileRepository
+    private val profileModel: ProfileModel
 ) : BaseViewModel() {
 
     val initialEntry = BehaviorSubject.createDefault<Optional<TimeEntry>>(Optional.empty())
 
     val timeZone = BehaviorSubject.createDefault<Optional<DateTimeZone>>(Optional.empty())
 
-    val manager = profileRepository.observeManager().filter { it }.distinctUntilChanged()
+    val manager = profileModel.observeManager().filter { it }.distinctUntilChanged()
 
     val users = manager.toFlowable(BackpressureStrategy.LATEST).flatMap { usersRepository.users() }
 
@@ -46,7 +46,7 @@ class EntryViewModel @Inject constructor(
         validTimeZoneIDs
     }.subscribeOn(Schedulers.io())
 
-    fun save(create: Boolean) = profileRepository.observeSession()
+    fun save(create: Boolean) = profileModel.observeSession()
         .takeSingle()
         .flatMap {
             if (it) {
@@ -94,7 +94,7 @@ class EntryViewModel @Inject constructor(
             entryRepository.deleteEntry(it.get())
         }.react()
 
-    fun delete() = profileRepository.observeSession()
+    fun delete() = profileModel.observeSession()
         .takeSingle()
         .flatMapCompletable {
             if (it) {

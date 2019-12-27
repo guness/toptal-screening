@@ -94,7 +94,6 @@ class ProfileActivity : BaseActivity<ProfileViewModel>(ProfileViewModel::class, 
 
         disposables += change_password.clicks()
             .subscribe {
-
                 val view = LayoutInflater.from(this).inflate(R.layout.layout_new_password, null)
 
                 MaterialAlertDialogBuilder(this)
@@ -105,6 +104,26 @@ class ProfileActivity : BaseActivity<ProfileViewModel>(ProfileViewModel::class, 
                     }
                     .setView(view)
                     .show()
+            }
+
+        disposables += delete.clicks()
+            .subscribe {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.sure_to_delete)
+                    .setMessage(R.string.messages_will_be_dropped)
+                    .setNegativeButton(R.string.cancel, null)
+                    .setPositiveButton(R.string.yes_delete) { _, _ ->
+                        deleteUser()
+                    }
+                    .show()
+            }
+    }
+
+    private fun deleteUser() {
+        disposables += viewModel.deleteUser()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                finish()
             }
     }
 

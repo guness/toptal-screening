@@ -9,6 +9,8 @@ import com.guness.toptal.client.ui.entry.EntryViewModel
 import com.guness.toptal.client.ui.main.BottomSheetViewModel
 import com.guness.toptal.client.ui.main.MainViewModel
 import com.guness.toptal.client.ui.profile.ProfileViewModel
+import com.guness.toptal.client.ui.user.CreateUserViewModel
+import com.guness.toptal.client.ui.users.UsersViewModel
 import com.guness.toptal.client.utils.viewModel.ViewModelFactory
 import com.guness.toptal.client.utils.viewModel.ViewModelKey
 import dagger.Binds
@@ -55,4 +57,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
     abstract fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UsersViewModel::class)
+    abstract fun bindUsersViewModel(viewModel: UsersViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateUserViewModel::class)
+    abstract fun bindNewUserViewModel(viewModel: CreateUserViewModel): ViewModel
 }

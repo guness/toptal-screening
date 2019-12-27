@@ -24,6 +24,8 @@
         <activity android:name=".ui.entry.EntryActivity" />
         <activity android:name=".ui.auth.AuthenticationActivity" />
         <activity android:name=".ui.profile.ProfileActivity" />
+        <activity android:name=".ui.users.UsersActivity" />
+        <activity android:name=".ui.user.CreateUserActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

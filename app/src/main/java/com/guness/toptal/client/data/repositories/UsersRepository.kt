@@ -3,6 +3,7 @@ package com.guness.toptal.client.data.repositories
 import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
 import com.guness.toptal.client.data.WebService
+import com.guness.toptal.client.data.room.EntryDao
 import com.guness.toptal.client.data.room.UserDao
 import com.guness.toptal.protocol.dto.User
 import com.guness.toptal.protocol.dto.UserRole
@@ -15,10 +16,13 @@ import javax.inject.Singleton
 class UsersRepository @Inject constructor(
     private val webService: WebService,
     private val userDao: UserDao,
-    private val profileRepository: ProfileRepository
+    private val entryDao: EntryDao,
+    private val profileModel: ProfileModel
 ) {
 
     fun users() = userDao.users()
+
+    fun usersWithEntries() = userDao.usersWithEntries()
 
     @WorkerThread
     fun postUser(user: User) = userDao.addUser(user)
@@ -32,7 +36,10 @@ class UsersRepository @Inject constructor(
 
     @AnyThread
     fun deleteUser(user: User) = webService.deleteUser(user.id)
-        .doOnComplete { removeUser(user) }
+        .doOnComplete {
+            removeUser(user)
+            entryDao.clearByUser(user.id)
+        }
 
     @AnyThread
     fun createUser(name: String, username: String, password: String) = webService.createUser(CreateUserRequest(name, username, password))
@@ -45,7 +52,7 @@ class UsersRepository @Inject constructor(
     @AnyThread
     fun updateUser(name: String) = webService.updateUser(UpdateUserRequest(name = name))
         .doOnSuccess(userDao::addUser)
-        .doOnSuccess(profileRepository::postProfile)
+        .doOnSuccess(profileModel::postProfile)
 
     @AnyThread
     fun changePassword(id: Long, password: String) = webService.updateUser(id, UpdateUserRequest(password = password))
@@ -53,7 +60,7 @@ class UsersRepository @Inject constructor(
 
     @AnyThread
     fun changePassword(password: String) = webService.updateUser(UpdateUserRequest(password = password))
-        .doOnSuccess(profileRepository::postProfile)
+        .doOnSuccess(profileModel::postProfile)
 
     @WorkerThread
     fun clear() = userDao.clear()

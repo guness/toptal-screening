@@ -3,7 +3,7 @@ package com.guness.toptal.client.ui.main
 import com.guness.toptal.client.core.BaseViewModel
 import com.guness.toptal.client.data.repositories.AuthRepository
 import com.guness.toptal.client.data.repositories.EntryRepository
-import com.guness.toptal.client.data.repositories.ProfileRepository
+import com.guness.toptal.client.data.repositories.ProfileModel
 import com.guness.toptal.client.data.repositories.UsersRepository
 import io.reactivex.BackpressureStrategy
 import io.reactivex.rxkotlin.Flowables
@@ -15,11 +15,11 @@ class MainViewModel @Inject constructor(
     private val entryRepository: EntryRepository,
     private val authRepository: AuthRepository,
     private val usersRepository: UsersRepository,
-    private val profileRepository: ProfileRepository
+    private val profileModel: ProfileModel
 ) : BaseViewModel() {
 
     val filter = BehaviorSubject.createDefault<CharSequence>("")
-    val manager = profileRepository.observeManager().toFlowable(BackpressureStrategy.LATEST)
+    val manager = profileModel.observeManager().toFlowable(BackpressureStrategy.LATEST)
 
     val users = usersRepository.users()
 
@@ -35,7 +35,7 @@ class MainViewModel @Inject constructor(
         }
 
     fun fetchUsers() {
-        disposables += profileRepository.observeManager()
+        disposables += profileModel.observeManager()
             .distinctUntilChanged()
             .filter { it }
             .flatMapSingle {
@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun fetchEntries() {
-        disposables += profileRepository.observeSession()
+        disposables += profileModel.observeSession()
             .filter { it }
             .flatMapSingle {
                 entryRepository.fetchEntries().ignoreResult()

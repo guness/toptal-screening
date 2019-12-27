@@ -69,6 +69,7 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
             .subscribe()
 
         disposables += Observables.combineLatest(viewModel.user, viewModel.timeZone)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 val user = it.first
                 if (it.second.isPresent) {

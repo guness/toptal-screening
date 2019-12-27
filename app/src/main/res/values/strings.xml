@@ -96,4 +96,8 @@
     <string name="user_role">User Role</string>
     <string name="clock_record">Clock Record</string>
     <string name="new_password">New Password</string>
+    <string name="users">Users</string>
+    <string name="messages_will_be_dropped">All clock records created by the user will also be discarded.</string>
+    <string name="create_new_user">Create New User</string>
+    <string name="create">Create</string>
 </resources>

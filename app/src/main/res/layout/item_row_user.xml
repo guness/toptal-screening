@@ -2,52 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="64dp"
     android:background="?android:attr/selectableItemBackground">
-
-    <TextClock
-        android:id="@+id/clock"
-        style="@style/TextAppearance.MyTheme.Headline4"
-        android:layout_width="92dp"
-        android:layout_height="56dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="monospace"
-        android:format12Hour="kk:mm"
-        android:format24Hour="kk:mm"
-        android:gravity="center"
-        android:textSize="25sp"
-        tools:text="16:42" />
-
-    <TextView
-        android:id="@+id/city"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
-        android:layout_toStartOf="@+id/offset"
-        android:layout_toEndOf="@+id/clock"
-        android:gravity="bottom"
-        tools:text="Istanbul" />
 
     <TextView
         android:id="@+id/name"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toStartOf="@+id/entries"
+        android:gravity="bottom"
+        tools:text="Sinan Gunes" />
+
+    <TextView
+        android:id="@+id/role"
         style="@style/TextAppearance.MaterialComponents.Caption"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_below="@+id/city"
-        android:layout_toStartOf="@+id/offset"
-        android:layout_toEndOf="@+id/clock"
+        android:layout_below="@+id/name"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_toStartOf="@+id/entries"
         android:ellipsize="end"
         android:gravity="bottom"
         android:maxLines="1"
-        tools:text="GMT+03:00" />
+        tools:text="ROLE_ADMIN" />
 
     <TextView
-        android:id="@+id/offset"
+        android:id="@+id/entries"
         style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,6 +41,9 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
+        android:ems="2"
+        android:gravity="end"
         android:textSize="18sp"
-        tools:text="+03" />
+        android:typeface="monospace"
+        tools:text="0" />
 </RelativeLayout>

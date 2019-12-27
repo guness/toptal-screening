@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class AuthRepository @Inject constructor(
     private val webService: WebService,
-    private val profileRepository: ProfileRepository,
+    private val profileModel: ProfileModel,
     private val entryRepository: EntryRepository,
     private val usersRepository: UsersRepository
 ) {
@@ -18,9 +18,9 @@ class AuthRepository @Inject constructor(
     @AnyThread
     fun login(username: String, password: String) = webService.login(LoginRequest(username, password))
         .doOnSuccess {
-            profileRepository.bearerToken = it.token
+            profileModel.bearerToken = it.token
             usersRepository.postUser(it.user)
-            profileRepository.postProfile(it.user)
+            profileModel.postProfile(it.user)
         }
         .ignoreElement()
 
@@ -28,9 +28,9 @@ class AuthRepository @Inject constructor(
     @AnyThread
     fun register(name: String, username: String, password: String) = webService.register(CreateUserRequest(name, username, password))
         .doOnSuccess {
-            profileRepository.bearerToken = it.token
+            profileModel.bearerToken = it.token
             usersRepository.postUser(it.user)
-            profileRepository.postProfile(it.user)
+            profileModel.postProfile(it.user)
         }
         .ignoreElement()
 
@@ -38,7 +38,7 @@ class AuthRepository @Inject constructor(
     fun logout() = webService.logout()
         .doOnComplete {
             entryRepository.clear()
-            profileRepository.clear()
+            profileModel.clear()
             usersRepository.clear()
         }
 }
