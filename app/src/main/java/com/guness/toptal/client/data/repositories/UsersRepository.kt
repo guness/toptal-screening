@@ -43,13 +43,17 @@ class UsersRepository @Inject constructor(
         .doOnSuccess(userDao::addUser)
 
     @AnyThread
-    fun updateSelf(name: String) = webService.updateSelf(UpdateUserRequest(name = name))
+    fun updateUser(name: String) = webService.updateUser(UpdateUserRequest(name = name))
         .doOnSuccess(userDao::addUser)
         .doOnSuccess(profileRepository::postProfile)
 
     @AnyThread
     fun changePassword(id: Long, password: String) = webService.updateUser(id, UpdateUserRequest(password = password))
         .doOnSuccess(userDao::addUser)
+
+    @AnyThread
+    fun changePassword(password: String) = webService.updateUser(UpdateUserRequest(password = password))
+        .doOnSuccess(profileRepository::postProfile)
 
     @WorkerThread
     fun clear() = userDao.clear()

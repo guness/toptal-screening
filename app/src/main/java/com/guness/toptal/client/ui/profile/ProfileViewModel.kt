@@ -22,11 +22,9 @@ class ProfileViewModel @Inject constructor(
     val user = BehaviorSubject.create<User>()
     val role = BehaviorSubject.create<UserRole>()
     val self = profileRepository.observeProfile().map { it.get() }
+    val selfProfile = Observables.combineLatest(user, self).map { it.first.id == it.second.id }
     val entries = user.flatMap { entryRepository.entriesByUser(it.id).toObservable() }
     val admin = profileRepository.observeAdmin().distinctUntilChanged()
-    val canEditName = Observables.combineLatest(admin, user, self).map {
-        it.first || it.second.id == it.third.id
-    }
 
     fun initSelf(): Observable<Unit> {
         return self
@@ -35,18 +33,31 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun save(newName: String): Single<Unit> {
-        return Observables.combineLatest(user, self, role)
+        return Observables.combineLatest(user, selfProfile, role)
             .takeSingle()
             .flatMap { triple ->
-                val selfChange = triple.first.id == triple.second.id
 
-                val role = triple.third.takeUnless { selfChange }
+                val role = triple.third.takeUnless { triple.second }
                 val name = newName.takeUnless { it == triple.first.name }
 
-                if (selfChange) {
-                    usersRepository.updateSelf(name!!)
+                if (triple.second) {
+                    usersRepository.updateUser(name!!)
                 } else {
                     usersRepository.updateUser(triple.first.id, name, role)
+                }
+            }
+            .react()
+            .map { }
+    }
+
+    fun changePassword(password: String): Single<Unit> {
+        return Observables.combineLatest(user, selfProfile)
+            .takeSingle()
+            .flatMap {
+                if (it.second) {
+                    usersRepository.changePassword(password)
+                } else {
+                    usersRepository.changePassword(it.first.id, password)
                 }
             }
             .react()
