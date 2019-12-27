@@ -19,12 +19,14 @@ import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.content_profile.*
 import kotlinx.android.synthetic.main.layout_new_password.view.*
+import java.util.*
 
 class ProfileActivity : BaseActivity<ProfileViewModel>(ProfileViewModel::class, R.layout.activity_profile) {
 
     override fun initView() {
 
         role_text.configureDropDownMenu(UserRole.values().toList()) { it.name }
+            .map { Optional.of(it) }
             .subscribe(viewModel.role)
 
         val user = intent.serializable<User>()
@@ -34,8 +36,13 @@ class ProfileActivity : BaseActivity<ProfileViewModel>(ProfileViewModel::class, 
             viewModel.user.onNext(user)
         }
 
+        disposables += role_text.textChanges()
+            .subscribe {
+                viewModel.role.onNext(Optional.empty())
+            }
+
         disposables += viewModel.user
-            .doOnNext { viewModel.role.onNext(it.role) }
+            .doOnNext { viewModel.role.onNext(Optional.of(it.role)) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 username.text = it.username
@@ -71,7 +78,7 @@ class ProfileActivity : BaseActivity<ProfileViewModel>(ProfileViewModel::class, 
                 viewModel.user, viewModel.role, name_text.textChanges(),
                 viewModel.activityIndicator
             ) { a, b, c, d ->
-                !d && (a.role != b || a.name != c.toString())
+                !d && b.isPresent && (a.role != b.get() || a.name != c.toString())
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { button.isEnabled = it }

@@ -12,6 +12,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.subjects.BehaviorSubject
+import java.util.*
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
@@ -21,7 +22,7 @@ class ProfileViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val user = BehaviorSubject.create<User>()
-    val role = BehaviorSubject.create<UserRole>() //TODO: make optional
+    val role = BehaviorSubject.createDefault(Optional.empty<UserRole>())
     val self = profileModel.observeProfile().map { it.get() }
     val selfProfile = Observables.combineLatest(user, self).map { it.first.id == it.second.id }
     val entries = user.flatMap { entryRepository.entriesByUser(it.id).toObservable() }
@@ -38,7 +39,7 @@ class ProfileViewModel @Inject constructor(
             .takeSingle()
             .flatMap { triple ->
 
-                val role = triple.third.takeUnless { triple.second }
+                val role = triple.third.get().takeUnless { triple.second }
                 val name = newName.takeUnless { it == triple.first.name }
 
                 if (triple.second) {
