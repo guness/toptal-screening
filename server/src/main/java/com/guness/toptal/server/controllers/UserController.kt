@@ -61,7 +61,7 @@ class UserController(
             name = request.name,
             username = request.username,
             password = passwordEncoder.encode(request.password),
-            authorities = listOfNotNull(roleRepository.findByRole())
+            authorities = listOfNotNull(roleRepository.findByRole(UserRole.ROLE_USER))
         )
         return try {
             ResponseEntity.ok(userRepository.save(user).toDto())

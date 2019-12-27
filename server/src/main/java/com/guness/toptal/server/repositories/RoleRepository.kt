@@ -5,5 +5,5 @@ import com.guness.toptal.server.model.Authority
 import org.springframework.data.repository.CrudRepository
 
 interface RoleRepository : CrudRepository<Authority, Long> {
-    fun findByRole(role: UserRole = UserRole.ROLE_USER): Authority?
+    fun findByRole(role: UserRole): Authority?
 }

@@ -1,5 +1,6 @@
 package com.guness.toptal.server.controllers
 
+import com.guness.toptal.protocol.dto.UserRole
 import com.guness.toptal.protocol.request.CreateUserRequest
 import com.guness.toptal.protocol.request.LoginRequest
 import com.guness.toptal.protocol.response.LoginResponse
@@ -61,7 +62,7 @@ class AuthController(
             name = request.name,
             username = request.username,
             password = passwordEncoder.encode(request.password),
-            authorities = listOfNotNull(roleRepository.findByRole())
+            authorities = listOfNotNull(roleRepository.findByRole(UserRole.ROLE_USER))
         )
         try {
             userRepository.save(user)
