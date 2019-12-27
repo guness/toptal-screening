@@ -11,7 +11,7 @@ class BottomSheetFragment : BaseBottomSheetDialogFragment<BottomSheetViewModel>(
 
     override fun initView() {
 
-        disposables += Observables.combineLatest(viewModel.hasSession, viewModel.isManager)
+        disposables += Observables.combineLatest(viewModel.hasSession, viewModel.isAdmin)
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {

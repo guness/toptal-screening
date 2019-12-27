@@ -10,6 +10,9 @@ interface EntryDao {
     @Query("SELECT * FROM ${ToptalDatabase.TABLE_ENTRY} ORDER BY id DESC")
     fun entries(): Flowable<List<TimeEntry>>
 
+    @Query("SELECT * FROM ${ToptalDatabase.TABLE_ENTRY} WHERE userId=:userId ORDER BY id DESC")
+    fun entriesByUser(userId: Long): Flowable<List<TimeEntry>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addEntries(list: List<TimeEntry>)
 

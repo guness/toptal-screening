@@ -14,7 +14,8 @@ import javax.inject.Singleton
 @Singleton
 class UsersRepository @Inject constructor(
     private val webService: WebService,
-    private val userDao: UserDao
+    private val userDao: UserDao,
+    private val profileRepository: ProfileRepository
 ) {
 
     fun users() = userDao.users()
@@ -38,8 +39,13 @@ class UsersRepository @Inject constructor(
         .doOnSuccess(userDao::addUser)
 
     @AnyThread
-    fun promoteUser(id: Long, role: UserRole) = webService.updateUser(id, UpdateUserRequest(role = role))
+    fun updateUser(id: Long, name: String? = null, role: UserRole? = null) = webService.updateUser(id, UpdateUserRequest(role = role, name = name))
         .doOnSuccess(userDao::addUser)
+
+    @AnyThread
+    fun updateSelf(name: String) = webService.updateSelf(UpdateUserRequest(name = name))
+        .doOnSuccess(userDao::addUser)
+        .doOnSuccess(profileRepository::postProfile)
 
     @AnyThread
     fun changePassword(id: Long, password: String) = webService.updateUser(id, UpdateUserRequest(password = password))

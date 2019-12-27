@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".ui.entry.EntryActivity" />
         <activity android:name=".ui.auth.AuthenticationActivity" />
+        <activity android:name=".ui.profile.ProfileActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -2,6 +2,7 @@ package com.guness.toptal.protocol.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
 data class User(
@@ -10,4 +11,4 @@ data class User(
     val name: String,
     val username: String,
     val role: UserRole
-)
+) : Serializable

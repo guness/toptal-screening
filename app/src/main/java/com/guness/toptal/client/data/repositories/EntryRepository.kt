@@ -35,6 +35,9 @@ class EntryRepository @Inject constructor(
     fun removeEntry(entry: TimeEntry) = entryDao.deleteEntry(entry)
 
     @AnyThread
+    fun entriesByUser(userId: Long) = entryDao.entriesByUser(userId)
+
+    @AnyThread
     fun fetchEntries() = webService.getEntries().map { it.entries }
         .doOnSuccess(entryDao::setEntries)
 

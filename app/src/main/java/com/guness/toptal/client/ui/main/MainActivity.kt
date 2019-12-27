@@ -8,6 +8,7 @@ import com.guness.toptal.client.core.BaseActivity
 import com.guness.toptal.client.ui.auth.AuthMode
 import com.guness.toptal.client.ui.auth.AuthenticationActivity
 import com.guness.toptal.client.ui.entry.EntryActivity
+import com.guness.toptal.client.ui.profile.ProfileActivity
 import com.guness.toptal.client.utils.extensions.startActivity
 import com.guness.toptal.client.utils.listView.ListAdapter
 import com.jakewharton.rxbinding3.view.clicks
@@ -83,7 +84,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
     }
 
     private fun handleAccountMenu() {
-
+        startActivity(ProfileActivity.newIntent(this))
     }
 
     private fun handleLoginMenu() {

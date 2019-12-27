@@ -89,4 +89,10 @@
     <string name="register">Register</string>
     <string name="have_account_register">Don\'t you have an account, let\'s have one?</string>
     <string name="have_account_login">Do you have an account? Just log in then.</string>
+    <string name="profile">Profile</string>
+    <string name="entries_label">Entries:</string>
+    <string name="username_label">Username:</string>
+    <string name="change_password">Change Password</string>
+    <string name="user_role">User Role</string>
+    <string name="clock_record">Clock Record</string>
 </resources>

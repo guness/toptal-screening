@@ -80,11 +80,13 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:' + versions.okhttp
     implementation 'com.squareup.okio:okio:2.4.2'
 
+    // Utils
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
     implementation 'joda-time:joda-time:' + versions.joda_time
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.github.guness:RxActivityResult:2.2.2'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
 
     implementation(project(":protocol")) {
         exclude group: 'jakarta.persistence'

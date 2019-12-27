@@ -69,7 +69,7 @@ class UserController(
         }
     }
 
-    @PostMapping("/user/{id}")
+    @PutMapping("/user/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     fun updateUser(@PathVariable id: Long, @RequestBody request: UpdateUserRequest): ResponseEntity<User> {
         var user = userRepository.findById(id).get()
@@ -95,6 +95,9 @@ class UserController(
         var user = userRepository.findByUsername(principal.name) ?: throw NoSuchElementException("No value present")
         request.password?.let {
             user = user.copy(password = passwordEncoder.encode(request.password))
+        }
+        request.name?.let {
+            user = user.copy(name = it)
         }
         return try {
             ResponseEntity.ok(userRepository.save(user).toDto())
