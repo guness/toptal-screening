@@ -1,6 +1,8 @@
 package com.guness.toptal.client.utils.errors
 
+import com.guness.toptal.client.R
 import com.guness.toptal.client.utils.SingleRun
+import com.guness.toptal.client.utils.Title
 import com.guness.toptal.protocol.dto.ErrorMessage
 import retrofit2.HttpException
 import java.io.IOException
@@ -21,3 +23,21 @@ val ToptalException.fresh
     get() = !singleRun.isUsed
 
 fun ToptalException.handle(action: () -> Unit) = singleRun.use(action)
+
+val ToptalException.displayMessage
+    get() = when (this) {
+        is ToptalException.ApiError -> Title.Text(response.message)
+        is ToptalException.HttpError -> getHttpErrorMessage(status)
+        is ToptalException.NetworkError -> Title.Resource(R.string.connection_error)
+        is ToptalException.UnknownError -> Title.Resource(R.string.unknown_error)
+        is ToptalException.LocalError -> Title.Text(message)
+    }
+
+private fun getHttpErrorMessage(status: Int) = Title.Resource(
+    when (status) {
+        401 -> R.string.unauthorized_access
+        409 -> R.string.duplicate_record
+        422 -> R.string.cannot_process_request
+        else -> R.string.protocol_error
+    }
+)

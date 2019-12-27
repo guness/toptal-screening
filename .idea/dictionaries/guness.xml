@@ -2,6 +2,7 @@
   <dictionary name="guness">
     <words>
       <w>gson</w>
+      <w>snackbar</w>
       <w>stetho</w>
       <w>toptal</w>
     </words>

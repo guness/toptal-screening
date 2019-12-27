@@ -66,7 +66,7 @@ class AuthController(
         try {
             userRepository.save(user)
         } catch (e: DataIntegrityViolationException) {
-            return ResponseEntity.unprocessableEntity().build<Any>()
+            return ResponseEntity.status(HttpStatus.CONFLICT).build<Any>()
         }
         return login(LoginRequest(request.username, request.password))
     }

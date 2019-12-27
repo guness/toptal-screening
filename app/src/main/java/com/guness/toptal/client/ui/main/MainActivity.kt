@@ -3,6 +3,7 @@ package com.guness.toptal.client.ui.main
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
+import androidx.core.view.isVisible
 import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
 import com.guness.toptal.client.ui.auth.AuthMode
@@ -46,6 +47,12 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
                 }
             }
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                val empty = it.items.isEmpty()
+                empty_image.isVisible = empty
+                empty_message.isVisible = empty
+                listView.isVisible = !empty
+            }
             .subscribe(adapter::update)
 
         disposables += viewModel.filter.skip(1).subscribe { toolbar.performShow() }

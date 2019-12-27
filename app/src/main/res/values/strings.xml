@@ -83,7 +83,7 @@
     <string name="empty" />
     <string name="saved_clocks">Saved Clocks</string>
     <string name="login">Login</string>
-    <string name="create_account">CreateAccount</string>
+    <string name="create_account">Create Account</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="register">Register</string>
@@ -100,4 +100,12 @@
     <string name="messages_will_be_dropped">All clock records created by the user will also be discarded.</string>
     <string name="create_new_user">Create New User</string>
     <string name="create">Create</string>
+    <string name="empty_message">Well, you haven\'t created a record yet.\n\nYou can use add button to fix that.</string>
+
+    <string name="protocol_error">Cannot complete operation due to protocol error.</string>
+    <string name="unknown_error">Unknown Error Happened.</string>
+    <string name="connection_error">Network error, please check your connection.</string>
+    <string name="unauthorized_access">Unauthorized Access!</string>
+    <string name="cannot_process_request">Cannot Process Request!</string>
+    <string name="duplicate_record">Record Already Exists</string>
 </resources>

@@ -1,19 +1,22 @@
 package com.guness.toptal.client.core
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.guness.toptal.client.R
+import com.guness.toptal.client.utils.errors.displayMessage
 import com.guness.toptal.client.utils.errors.fresh
 import com.guness.toptal.client.utils.errors.handle
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
@@ -54,9 +57,20 @@ abstract class BaseActivity<VM : BaseViewModel>(private val classType: KClass<VM
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 it.handle {
-                    //todo: display error here
-                    Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
-                    Timber.e(it)
+                    val message = it.displayMessage.getText(this)!!
+                    val rootView = findViewById<View>(R.id.rootView)
+
+                    if (rootView == null) {
+                        Toast.makeText(this, message, Toast.LENGTH_LONG)
+                            .show()
+                    } else {
+                        Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
+                            .setBackgroundTint(getColor(R.color.color_secondary_variant))
+                            .also { snackbar ->
+                                findViewById<FloatingActionButton>(R.id.fab)?.let(snackbar::setAnchorView)
+                            }
+                            .show()
+                    }
                 }
             }
     }

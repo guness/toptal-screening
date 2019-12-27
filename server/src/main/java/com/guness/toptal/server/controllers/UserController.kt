@@ -12,6 +12,7 @@ import com.guness.toptal.server.repositories.UserRepository
 import com.guness.toptal.server.utils.hasAny
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -65,7 +66,7 @@ class UserController(
         return try {
             ResponseEntity.ok(userRepository.save(user).toDto())
         } catch (e: DataIntegrityViolationException) {
-            ResponseEntity.unprocessableEntity().build()
+            ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
     }
 
