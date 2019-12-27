@@ -9,6 +9,31 @@
     tools:showIn="@layout/activity_entry">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/user_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/user"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <AutoCompleteTextView
+            android:id="@+id/user_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="textPersonName|textAutoComplete" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
@@ -19,7 +44,7 @@
         android:hint="@string/city"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/user_layout">
 
         <AutoCompleteTextView
             android:id="@+id/input_edit_text"
@@ -97,38 +122,13 @@
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/user_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:hint="@string/user"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/offset_layout"
-        tools:visibility="visible">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/user_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:inputType="none" />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <TextClock
         android:id="@+id/clock"
         style="@style/TextAppearance.MyTheme.Headline4"
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="monospace"
         android:format12Hour="kk:mm"
@@ -136,8 +136,9 @@
         android:gravity="center"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_layout"
+        app:layout_constraintTop_toBottomOf="@+id/offset_layout"
         tools:text="16:42" />
 
     <com.google.android.material.button.MaterialButton

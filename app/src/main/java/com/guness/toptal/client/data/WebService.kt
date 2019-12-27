@@ -36,7 +36,7 @@ interface WebService {
     @PUT("user/{id}")
     fun updateUser(@Path("id") id: Long, @Body request: UpdateUserRequest): Single<User>
 
-    @GET("users")
+    @GET("user/all")
     fun getUsers(): Single<GetUsersResponse>
 
     @GET("user")

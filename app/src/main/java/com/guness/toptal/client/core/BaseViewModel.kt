@@ -11,6 +11,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
+import timber.log.Timber
 
 abstract class BaseViewModel : ViewModel() {
 
@@ -35,7 +36,10 @@ abstract class BaseViewModel : ViewModel() {
 
 
     // -- RX.dontCare() --
-    protected fun <T> Single<T>.ignoreResult() = track().onErrorResumeNext { Single.never() }
+    protected fun <T> Single<T>.ignoreResult() = track().onErrorResumeNext {
+        Timber.d(it, "Ignored result")
+        Single.never()
+    }
 
     // -- RX.track() --
     protected fun <T> Maybe<T>.track() = trackActivity(activityIndicator)

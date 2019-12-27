@@ -36,9 +36,10 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
             val bottomNavDrawerFragment = BottomSheetFragment()
             bottomNavDrawerFragment.show(supportFragmentManager, bottomNavDrawerFragment.tag)
         }
-        disposables += Flowables.combineLatest(viewModel.entries, viewModel.manager)
-            .map { pair ->
-                TimeEntryAdapterModel(pair.first, pair.second) {
+        disposables += Flowables.combineLatest(viewModel.entries, viewModel.users, viewModel.manager)
+            .distinctUntilChanged()
+            .map { triple ->
+                TimeEntryAdapterModel(triple.first, triple.second, triple.third) {
                     startActivity(EntryActivity.newIntent(this, it))
                 }
             }
@@ -48,6 +49,7 @@ class MainActivity : BaseActivity<MainViewModel>(MainViewModel::class, R.layout.
         disposables += viewModel.filter.skip(1).subscribe { toolbar.performShow() }
 
         viewModel.fetchEntries()
+        viewModel.fetchUsers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

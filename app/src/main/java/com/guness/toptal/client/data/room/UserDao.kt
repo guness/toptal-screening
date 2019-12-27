@@ -28,4 +28,10 @@ interface UserDao {
 
     @Query("SELECT * FROM  ${ToptalDatabase.TABLE_USER} WHERE id=:userId LIMIT 1")
     fun user(userId: Long): Observable<User>
+
+    @Transaction
+    fun setUsers(list: List<User>) {
+        clear()
+        addUsers(list)
+    }
 }

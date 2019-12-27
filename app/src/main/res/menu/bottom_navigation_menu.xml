@@ -3,8 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
+        android:id="@+id/bottom_nav_users"
+        android:icon="@drawable/ic_users_on_surface_24dp"
+        android:orderInCategory="0"
+        android:title="@string/bottom_nav_users_title"
+        android:visible="false"
+        tools:visible="true" />
+
+    <item
         android:id="@+id/bottom_nav_account"
         android:icon="@drawable/ic_account_on_surface_24dp"
+        android:orderInCategory="1"
         android:title="@string/bottom_nav_account_title"
         android:visible="false"
         tools:visible="true" />
@@ -12,6 +21,7 @@
     <item
         android:id="@+id/bottom_nav_register"
         android:icon="@drawable/ic_account_on_surface_24dp"
+        android:orderInCategory="2"
         android:title="@string/bottom_nav_register_title"
         android:visible="false"
         tools:visible="true" />
@@ -19,6 +29,7 @@
     <item
         android:id="@+id/bottom_nav_login"
         android:icon="@drawable/ic_login_on_surface_24dp"
+        android:orderInCategory="3"
         android:title="@string/bottom_nav_login_title"
         android:visible="false"
         tools:visible="true" />
@@ -26,14 +37,8 @@
     <item
         android:id="@+id/bottom_nav_logout"
         android:icon="@drawable/ic_logout_on_surface_24dp"
+        android:orderInCategory="4"
         android:title="@string/bottom_nav_logout_title"
-        android:visible="false"
-        tools:visible="true" />
-
-    <item
-        android:id="@+id/bottom_nav_users"
-        android:icon="@drawable/ic_users_on_surface_24dp"
-        android:title="@string/bottom_nav_users_title"
         android:visible="false"
         tools:visible="true" />
 

@@ -58,6 +58,7 @@ class AuthController(
     @PostMapping("/auth/register")
     fun register(@RequestBody request: CreateUserRequest): ResponseEntity<*> {
         val user = StoredUser(
+            name = request.name,
             username = request.username,
             password = passwordEncoder.encode(request.password),
             authorities = listOfNotNull(roleRepository.findByRole())

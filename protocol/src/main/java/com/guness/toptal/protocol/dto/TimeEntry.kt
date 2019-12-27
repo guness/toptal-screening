@@ -1,7 +1,6 @@
 package com.guness.toptal.protocol.dto
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -11,15 +10,7 @@ import org.joda.time.DateTimeZone
 import java.io.Serializable
 import kotlin.math.absoluteValue
 
-@Entity(
-    foreignKeys = [ForeignKey(
-        entity = User::class,
-        parentColumns = ["id"],
-        childColumns = ["userId"],
-        onUpdate = ForeignKey.SET_NULL,
-        onDelete = ForeignKey.CASCADE
-    )]
-)
+@Entity
 data class TimeEntry(
 
     @PrimaryKey(autoGenerate = true)

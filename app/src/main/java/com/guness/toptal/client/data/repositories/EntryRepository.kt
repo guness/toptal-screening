@@ -17,6 +17,9 @@ class EntryRepository @Inject constructor(
 ) {
     fun entries() = entryDao.entries()
 
+    @WorkerThread
+    fun clear() = entryDao.clear()
+
     @AnyThread
     fun createEntry(entry: TimeEntry, userId: Long? = null) = webService.createEntry(entry, userId)
         .doOnSuccess(entryDao::addEntry)
@@ -31,9 +34,10 @@ class EntryRepository @Inject constructor(
     @WorkerThread
     fun removeEntry(entry: TimeEntry) = entryDao.deleteEntry(entry)
 
+    @AnyThread
     fun fetchEntries() = webService.getEntries().map { it.entries }
         .doOnSuccess(entryDao::setEntries)
 
-    fun updateTime(id: Long, timeZone: DateTimeZone) = webService.updateEntry(id, UpdateEntryRequest(timeZone = timeZone))
+    fun updateTime(id: Long, timeZone: DateTimeZone, userId: Long? = null) = webService.updateEntry(id, UpdateEntryRequest(timeZone = timeZone, userId = userId))
         .doOnSuccess(entryDao::addEntry)
 }

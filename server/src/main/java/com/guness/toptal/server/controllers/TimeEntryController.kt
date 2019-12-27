@@ -60,10 +60,27 @@ class TimeEntryController(
         var entry = timeEntryRepository.findById(id).get()
         if (!arrayOf(UserRole.ROLE_ADMIN, UserRole.ROLE_MANAGER).hasAny()) {
             if (principal.name != entry.user.username) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+            }
+            request.userId?.let {
+                val user = userRepository.findById(it)
+                if (user.isPresent) {
+                    if (principal.name != user.get().username) {
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+                    }
+                } else {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+                }
             }
         }
-
+        request.userId?.let {
+            val user = userRepository.findById(it)
+            if (user.isPresent) {
+                entry = entry.copy(user = user.get())
+            } else {
+                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build()
+            }
+        }
         request.timeZone?.let {
             entry = entry.copy(timeZone = it)
         }

@@ -26,11 +26,15 @@ class UsersRepository @Inject constructor(
     fun removeUser(user: User) = userDao.deleteUser(user)
 
     @AnyThread
+    fun fetchUsers() = webService.getUsers()
+        .doOnSuccess { userDao.setUsers(it.users) }
+
+    @AnyThread
     fun deleteUser(user: User) = webService.deleteUser(user.id)
         .doOnComplete { removeUser(user) }
 
     @AnyThread
-    fun createUser(username: String, password: String) = webService.createUser(CreateUserRequest(username, password))
+    fun createUser(name: String, username: String, password: String) = webService.createUser(CreateUserRequest(name, username, password))
         .doOnSuccess(userDao::addUser)
 
     @AnyThread

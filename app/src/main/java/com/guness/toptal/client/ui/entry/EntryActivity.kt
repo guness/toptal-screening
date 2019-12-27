@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.guness.toptal.client.R
 import com.guness.toptal.client.core.BaseActivity
@@ -18,6 +19,7 @@ import com.guness.toptal.protocol.dto.validTimeZoneIDs
 import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.content_entry.*
 import org.joda.time.DateTimeUtils
@@ -44,25 +46,48 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
             viewModel.timeZone.onNext(Optional.of(it.timeZone))
             input_edit_text.setText(it.timeZone.id.timeZoneCity())
             delete.visibility = View.VISIBLE
+
+            disposables += viewModel.manager.flatMap { viewModel.loadUser(initialEntry.userId) }.subscribe()
         }
 
-        disposables += viewModel.timeZone.subscribe {
-            if (it.isPresent) {
-                name_text.setText(it.get().name)
-                offset_text.setText(it.get().gmt())
-                id_text.setText(it.get().id)
-                clock.timeZone = it.get().id
-                clock.visibility = View.VISIBLE
-                button.isEnabled = it.get() != initialEntry?.timeZone
-                hideKeyboard()
-            } else {
-                name_text.setText("")
-                offset_text.setText("")
-                id_text.setText("")
-                clock.visibility = View.INVISIBLE
-                button.isEnabled = false
+        disposables += viewModel.manager
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                user_text.isFocusable = it
+                user_text.isFocusableInTouchMode = it
+                user_text.isCursorVisible = it
+                user_layout.isVisible = it
             }
-        }
+
+        disposables += viewModel.users
+            .observeOn(AndroidSchedulers.mainThread())
+            .toObservable()
+            .flatMap { user_text.configureDropDownMenu(it) { "${it.name}(${it.username})" } }
+            .doOnNext {
+                viewModel.user.onNext(Optional.of(it))
+            }
+            .subscribe()
+
+        disposables += Observables.combineLatest(viewModel.user, viewModel.timeZone)
+            .subscribe {
+                val user = it.first
+                if (it.second.isPresent) {
+                    val timeZone = it.second.get()
+                    name_text.setText(timeZone.name)
+                    offset_text.setText(timeZone.gmt())
+                    id_text.setText(timeZone.id)
+                    clock.timeZone = timeZone.id
+                    clock.visibility = View.VISIBLE
+                    button.isEnabled = timeZone != initialEntry?.timeZone || initialEntry.userId != user.map { it.id }.orElse(0)
+                    hideKeyboard()
+                } else {
+                    name_text.setText("")
+                    offset_text.setText("")
+                    id_text.setText("")
+                    clock.visibility = View.INVISIBLE
+                    button.isEnabled = false
+                }
+            }
 
         disposables += input_edit_text.textChanges().skip(1).subscribe {
             viewModel.timeZone.onNext(Optional.empty())
@@ -71,8 +96,7 @@ class EntryActivity : BaseActivity<EntryViewModel>(EntryViewModel::class, R.layo
         disposables += viewModel.user
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                user_text.setText(it.username)
-                user_layout.visibility = View.VISIBLE
+                user_text.setText(it.map { "${it.name}(${it.username})" }.orElse(""), false)
             }
 
         disposables += button.clicks()

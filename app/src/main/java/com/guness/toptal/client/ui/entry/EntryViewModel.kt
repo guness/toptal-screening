@@ -6,8 +6,11 @@ import com.guness.toptal.client.data.repositories.ProfileRepository
 import com.guness.toptal.client.data.repositories.UsersRepository
 import com.guness.toptal.client.utils.extensions.takeSingle
 import com.guness.toptal.protocol.dto.TimeEntry
+import com.guness.toptal.protocol.dto.User
 import com.guness.toptal.protocol.dto.validTimeZoneIDs
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
@@ -26,10 +29,11 @@ class EntryViewModel @Inject constructor(
 
     val timeZone = BehaviorSubject.createDefault<Optional<DateTimeZone>>(Optional.empty())
 
-    val user = Observables.combineLatest(profileRepository.observeManager().filter { it }, initialEntry.filter { it.isPresent })
-        .flatMap {
-            usersRepository.user(it.second.get().userId!!)
-        }
+    val manager = profileRepository.observeManager().filter { it }.distinctUntilChanged()
+
+    val users = manager.toFlowable(BackpressureStrategy.LATEST).flatMap { usersRepository.users() }
+
+    val user = BehaviorSubject.createDefault<Optional<User>>(Optional.empty())
 
     private val timeEntry = Observables.combineLatest(timeZone, initialEntry)
         .map { pair ->
@@ -71,10 +75,17 @@ class EntryViewModel @Inject constructor(
 
     private fun saveServer(create: Boolean) = timeEntry.takeSingle().flatMap {
         val entry = it.get()
-        if (create) {
-            entryRepository.createEntry(entry)
+
+        val userId = if (user.value?.isPresent == true) {
+            user.value!!.get().id
         } else {
-            entryRepository.updateTime(entry.id, entry.timeZone)
+            null
+        }
+
+        if (create) {
+            entryRepository.createEntry(entry, userId = userId)
+        } else {
+            entryRepository.updateTime(entry.id, entry.timeZone, userId = userId)
         }
     }
 
@@ -92,4 +103,10 @@ class EntryViewModel @Inject constructor(
                 deleteLocal()
             }
         }
+
+    fun loadUser(userId: Long?): Observable<Unit> {
+        return userId?.let {
+            usersRepository.user(it).doOnNext { user.onNext(Optional.of(it)) }.map { }
+        } ?: Observable.empty()
+    }
 }

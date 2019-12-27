@@ -2,16 +2,22 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fc9de97255a4044c7a79fcf151d0254b",
+    "identityHash": "08e865a38143174f3241137e0aebabcb",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `username` TEXT NOT NULL, `role` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `username` TEXT NOT NULL, `role` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -38,7 +44,7 @@
       },
       {
         "tableName": "TimeEntry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` INTEGER, `timeZone` TEXT NOT NULL, FOREIGN KEY(`userId`) REFERENCES `User`(`id`) ON UPDATE SET NULL ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` INTEGER, `timeZone` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -66,25 +72,13 @@
           "autoGenerate": true
         },
         "indices": [],
-        "foreignKeys": [
-          {
-            "table": "User",
-            "onDelete": "CASCADE",
-            "onUpdate": "SET NULL",
-            "columns": [
-              "userId"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fc9de97255a4044c7a79fcf151d0254b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '08e865a38143174f3241137e0aebabcb')"
     ]
   }
 }

@@ -10,6 +10,7 @@ data class StoredUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
+    val name: String,
     val username: String,
     val password: String,
     val enabled: Boolean = true,
@@ -42,5 +43,5 @@ class DetailedUser(val storedUser: StoredUser) : UserDetails {
     override fun isAccountNonLocked() = true
 }
 
-fun StoredUser.toDto() = DtoUser(id, username, authorities.first().role)
-fun DetailedUser.toDto() = DtoUser(storedUser.id, username, authorities.first().role)
+fun StoredUser.toDto() = DtoUser(id, name, username, authorities.first().role)
+fun DetailedUser.toDto() = DtoUser(storedUser.id, storedUser.name, username, authorities.first().role)
