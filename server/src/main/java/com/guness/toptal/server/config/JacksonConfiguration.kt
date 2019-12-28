@@ -1,6 +1,5 @@
 package com.guness.toptal.server.config
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -10,7 +9,6 @@ import org.joda.time.DateTimeZone
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
-
 
 @Configuration
 class JacksonConfiguration {

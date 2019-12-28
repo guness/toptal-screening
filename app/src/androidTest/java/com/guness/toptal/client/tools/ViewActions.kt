@@ -7,17 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.util.HumanReadables
-import androidx.test.espresso.util.TreeIterables
 import junit.framework.AssertionFailedError
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert
-import java.util.concurrent.TimeoutException
 
 fun withRecyclerView(recyclerViewId: Int): RecyclerViewMatcher {
     return RecyclerViewMatcher(recyclerViewId)

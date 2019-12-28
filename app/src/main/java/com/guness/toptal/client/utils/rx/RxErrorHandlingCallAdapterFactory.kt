@@ -142,7 +142,7 @@ private fun asRetrofitException(retrofit: Retrofit?, url: String, throwable: Thr
             val response = throwable.response()
             val converter = retrofit?.responseBodyConverter<ErrorMessage>(ErrorMessage::class.java, arrayOfNulls<Annotation>(0))
             val message: ErrorMessage? = try {
-                converter?.convert(response?.errorBody())
+                response?.errorBody()?.let { converter?.convert(it) }
             } catch (e: Exception) {
                 null
             }
