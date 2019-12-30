@@ -15,6 +15,7 @@ class RxErrorHandlingCallAdapterFactory(private val scheduler: Scheduler) : Call
 
     private var mOriginalCallAdapterFactory: RxJava2CallAdapterFactory = RxJava2CallAdapterFactory.create()
 
+    @Suppress("UNCHECKED_CAST")
     override fun get(returnType: Type?, annotations: Array<out Annotation>?, retrofit: Retrofit): CallAdapter<*, *>? {
         val rawType = getRawType(returnType)
         val wrapped = mOriginalCallAdapterFactory.get(returnType, annotations, retrofit)

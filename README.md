@@ -43,9 +43,13 @@ Android Application can be installed directly to connected device or emulator by
 
     ./gradlew installDebug
 
-After making sure server is running, below command runs instrumentation tests.
+After making sure server is running, following command runs instrumentation tests.
 
     ./gradlew connectedAndroidTest
+    
+In order to run Unit Tests for Android:
+
+    ./gradlew testDebugUnitTest
 
 ## Configuration
 

@@ -14,14 +14,14 @@ import org.junit.Rule
 import org.junit.Test
 
 @LargeTest
-class UserCanLogin {
+class UserCanLoginLogout {
 
     @Rule
     @JvmField
     var activityTestRule = ActivityTestRule(MainActivity::class.java)
 
     @Test
-    fun userCanLogin() {
+    fun test() {
 
         onView(withContentDescription("Navigate up")).perform(click())
 
@@ -44,5 +44,15 @@ class UserCanLogin {
             .await()
 
         onView(withId(R.id.empty_image)).check(matches(not(isDisplayed())))
+
+        onView(withContentDescription("Navigate up")).perform(click())
+
+        onView(withText(R.string.bottom_nav_logout_title))
+            .check(matches(isDisplayed()))
+            .perform(click())
+
+        onView(withContentDescription("Navigate up")).perform(click())
+        onView(withText(R.string.bottom_nav_login_title))
+            .check(matches(isDisplayed()))
     }
 }

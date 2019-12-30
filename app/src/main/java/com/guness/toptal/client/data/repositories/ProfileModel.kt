@@ -45,7 +45,12 @@ class ProfileModel @Inject constructor(private val context: Context, private val
 
     var bearerToken: String? = sharedPreferences.getString(BEARER_KEY, null)
         set(value) {
-            sharedPreferences.edit().putString(BEARER_KEY, value).apply()
+            if (value == null) {
+                sharedPreferences.edit().remove(BEARER_KEY).apply()
+            } else {
+                sharedPreferences.edit().putString(BEARER_KEY, value).apply()
+            }
+
             field = value
         }
 
